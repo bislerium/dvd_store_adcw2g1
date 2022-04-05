@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj": {}
+    "C:\\Users\\Ngima Gelu Sherpa\\Documents\\GitHub\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj": {}
   },
   "projects": {
-    "D:\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj": {
+    "C:\\Users\\Ngima Gelu Sherpa\\Documents\\GitHub\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj",
+        "projectUniqueName": "C:\\Users\\Ngima Gelu Sherpa\\Documents\\GitHub\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj",
         "projectName": "dvd_store_adcw2g1",
-        "projectPath": "D:\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj",
-        "packagesPath": "C:\\Users\\bisha\\.nuget\\packages\\",
-        "outputPath": "D:\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\obj\\",
+        "projectPath": "C:\\Users\\Ngima Gelu Sherpa\\Documents\\GitHub\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\dvd_store_adcw2g1.csproj",
+        "packagesPath": "C:\\Users\\Ngima Gelu Sherpa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ngima Gelu Sherpa\\Documents\\GitHub\\dvd_store_adcw2g1\\dvd_store_adcw2g1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\bisha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ngima Gelu Sherpa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
