@@ -9,7 +9,6 @@
       "dvd_store_adcw2g1/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "6.0.3",
-          "Microsoft.EntityFrameworkCore.Design": "6.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.3"
         },
