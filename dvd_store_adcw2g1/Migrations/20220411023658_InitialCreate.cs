@@ -24,19 +24,6 @@ namespace dvd_store_adcw2g1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CastMembers",
-                columns: table => new
-                {
-                    DVDNumber = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ActorNumber = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CastMembers", x => x.DVDNumber);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DVDCategories",
                 columns: table => new
                 {
@@ -179,6 +166,32 @@ namespace dvd_store_adcw2g1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CastMembers",
+                columns: table => new
+                {
+                    CastMemberNumber = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DVDNumber = table.Column<int>(type: "int", nullable: false),
+                    ActorNumber = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CastMembers", x => x.CastMemberNumber);
+                    table.ForeignKey(
+                        name: "FK_CastMembers_Actors_ActorNumber",
+                        column: x => x.ActorNumber,
+                        principalTable: "Actors",
+                        principalColumn: "ActorNumber",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CastMembers_DVDTitles_DVDNumber",
+                        column: x => x.DVDNumber,
+                        principalTable: "DVDTitles",
+                        principalColumn: "DVDNumber",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DVDCopies",
                 columns: table => new
                 {
@@ -235,6 +248,16 @@ namespace dvd_store_adcw2g1.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CastMembers_ActorNumber",
+                table: "CastMembers",
+                column: "ActorNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CastMembers_DVDNumber",
+                table: "CastMembers",
+                column: "DVDNumber");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DVDCopies_DVDNumber",
                 table: "DVDCopies",
                 column: "DVDNumber");
@@ -278,9 +301,6 @@ namespace dvd_store_adcw2g1.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Actors");
-
-            migrationBuilder.DropTable(
                 name: "CastMembers");
 
             migrationBuilder.DropTable(
@@ -288,6 +308,9 @@ namespace dvd_store_adcw2g1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Actors");
 
             migrationBuilder.DropTable(
                 name: "DVDCopies");

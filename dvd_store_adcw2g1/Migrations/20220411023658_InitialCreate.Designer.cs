@@ -12,7 +12,7 @@ using dvd_store_adcw2g1.Models;
 namespace dvd_store_adcw2g1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220405075615_InitialCreate")]
+    [Migration("20220411023658_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,16 +47,23 @@ namespace dvd_store_adcw2g1.Migrations
 
             modelBuilder.Entity("dvd_store_adcw2g1.Models.CastMember", b =>
                 {
-                    b.Property<int>("DVDNumber")
+                    b.Property<int>("CastMemberNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DVDNumber"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CastMemberNumber"), 1L, 1);
 
                     b.Property<int>("ActorNumber")
                         .HasColumnType("int");
 
-                    b.HasKey("DVDNumber");
+                    b.Property<int>("DVDNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("CastMemberNumber");
+
+                    b.HasIndex("ActorNumber");
+
+                    b.HasIndex("DVDNumber");
 
                     b.ToTable("CastMembers");
                 });
@@ -309,6 +316,25 @@ namespace dvd_store_adcw2g1.Migrations
                     b.HasKey("UserNumber");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("dvd_store_adcw2g1.Models.CastMember", b =>
+                {
+                    b.HasOne("dvd_store_adcw2g1.Models.Actor", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dvd_store_adcw2g1.Models.DVDTitle", "DVDTitle")
+                        .WithMany()
+                        .HasForeignKey("DVDNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("DVDTitle");
                 });
 
             modelBuilder.Entity("dvd_store_adcw2g1.Models.DVDCopy", b =>
