@@ -8,7 +8,7 @@ namespace dvd_store_adcw2g1.Models
     public class DatabaseContext: DbContext
     {
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
 
         public DbSet<Actor> Actors { get; set; }
 
