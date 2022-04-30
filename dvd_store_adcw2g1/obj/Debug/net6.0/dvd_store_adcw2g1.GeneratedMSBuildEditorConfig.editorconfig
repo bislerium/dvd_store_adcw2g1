@@ -15,6 +15,22 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\User\Documents\GitHub\dvd_store_adcw2g1\dvd_store_adcw2g1
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/User/Documents/GitHub/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/Actor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/Actor/EditPost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcRWRpdFBvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/Actor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/castmember/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcY2FzdG1lbWJlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/User/Documents/GitHub/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
