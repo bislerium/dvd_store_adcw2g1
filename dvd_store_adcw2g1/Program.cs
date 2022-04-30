@@ -1,4 +1,5 @@
 using dvd_store_adcw2g1.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => {
         builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName));
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

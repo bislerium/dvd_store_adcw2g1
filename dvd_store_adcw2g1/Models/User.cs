@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dvd_store_adcw2g1.Models
 {
     public class User
     {
         [Key]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int UserNumber { get; set; }
 
         public string UserName { get; set; }
