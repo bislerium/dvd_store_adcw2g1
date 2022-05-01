@@ -452,3 +452,11 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+*.cache
+.vs/VSWorkspaceState.json
+.vs/slnx.sqlite
+.vs/dvd_store_adcw2g1/v17/.suo
+dvd_store_adcw2g1/obj/Debug/net6.0/apphost.exe
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.assets.cache
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.GeneratedMSBuildEditorConfig.editorconfig
+dvd_store_adcw2g1/obj/Release/net6.0/dvd_store_adcw2g1.csproj.AssemblyReference.cache

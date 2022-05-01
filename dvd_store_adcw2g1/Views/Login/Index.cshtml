@@ -1,11 +1,60 @@
-﻿
+﻿@model dvd_store_adcw2g1.Models.User
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Login In";
+}
+<head>
+     <link rel="stylesheet" href="~/css/auth.css">
+</head>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+        @ViewBag.error
+		<form asp-controller="Login" asp-action="login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<h1>Create Account</h1>
+
+			<input type="text" asp-for="UserName" class="form-control" placeholder="Username" required />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+			<input type="password" asp-for="UserPassword" class="form-control" placeholder="Password" required />
+            <span asp-validation-for="UserPassword" class="text-danger"></span>
+			<button type="submit" value="Create">Sign Up</button>
+		</form>
+	</div>
+
+
+	<div class="form-container sign-in-container">
+		<form method="post" asp-controller="Login" asp-action="login">
+			<h1>Sign in</h1>
+
+			<input type="text" name="username" required placeholder="Username" />
+			<input type="password" name="userpassword" placeholder="Password" required />
+			<a href="#">Forgot your password?</a>
+			<button type="submit" value="Login">Sign In</button>
+		</form>
+	</div>
+
+
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hello, Friend!</h1>
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost" id="signUp">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 
-
- <h3>Login Page</h3>
+ @* <h3>Login Page</h3>
             @ViewBag.error
             <form method="post" asp-controller="login" asp-action="login">
                 <table border="0" cellpadding="2" cellspacing="2">
@@ -22,4 +71,4 @@
                         <td><input type="submit" value="Login"></td>
                     </tr>
                 </table>
-            </form>
+            </form> *@
