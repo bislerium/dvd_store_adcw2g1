@@ -1,12 +1,121 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using dvd_store_adcw2g1.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace dvd_store_adcw2g1.Controllers
 {
     public class ProducerController : Controller
     {
-        public IActionResult Index()
+
+        private readonly DatabaseContext _databasecontext;
+
+        public ProducerController(DatabaseContext context)
+        {
+            _databasecontext = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            return View(await _databasecontext.Producers.ToListAsync());
+        }
+
+
+        public async Task<IActionResult> Create()
         {
             return View();
+
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Producer producer)
+
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _databasecontext.Add(producer);
+                    await _databasecontext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+            return View(producer);
+        }
+
+        public async Task<IActionResult> EditPost(int id)
+        {
+            var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ProducerNumber == id);
+            return View(producerToUpdate);
+        }
+
+
+        [HttpPost, ActionName("EditPost")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var producerToUpdate = await _databasecontext.Producers.FirstOrDefaultAsync(s => s.ProducerNumber == id);
+            if (await TryUpdateModelAsync<Producer>(
+                producerToUpdate,
+                "",
+                s => s.ProducerName))
+            {
+                try
+                {
+                    await _databasecontext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(producerToUpdate);
+        }
+
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ActorNumber == id);
+            return View(producerToUpdate);
+        }
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var producer = await _databasecontext.Producers.FindAsync(id);
+            if (producer == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _databasecontext.Producers.Remove(producer);
+                await _databasecontext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(DeleteConfirmed), new { id = id, saveChangesError = true });
+            }
+        }
+
+
+
     }
 }
