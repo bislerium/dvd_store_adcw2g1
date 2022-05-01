@@ -8,7 +8,7 @@ namespace dvd_store_adcw2g1.Controllers
     {
 
         private readonly DatabaseContext _databasecontext;
-
+         
         public ActorController(DatabaseContext context)
         {
             _databasecontext = context;
@@ -51,8 +51,8 @@ namespace dvd_store_adcw2g1.Controllers
 
         public async Task<IActionResult> EditPost(int id)
         {
-            var studentToUpdate = await _databasecontext.Actors.SingleOrDefaultAsync(s => s.ActorNumber == id);
-            return View(studentToUpdate);
+            var actorToUpdate = await _databasecontext.Actors.SingleOrDefaultAsync(s => s.ActorNumber == id);
+            return View(actorToUpdate);
         }
 
 
@@ -64,9 +64,9 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 return NotFound();
             }
-            var studentToUpdate = await _databasecontext.Actors.FirstOrDefaultAsync(s => s.ActorNumber == id);
+            var actorToUpdate = await _databasecontext.Actors.FirstOrDefaultAsync(s => s.ActorNumber == id);
             if (await TryUpdateModelAsync<Actor>(
-                studentToUpdate,
+                actorToUpdate,
                 "",
                 s => s.ActorSurname, s => s.ActorFirstName))
             {
@@ -83,7 +83,36 @@ namespace dvd_store_adcw2g1.Controllers
                         "see your system administrator.");
                 }
             }
-            return View(studentToUpdate);
+            return View(actorToUpdate);
+        }
+
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var actorToUpdate = await _databasecontext.Actors.SingleOrDefaultAsync(s => s.ActorNumber == id);
+            return View(actorToUpdate);
+        }
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var actor = await _databasecontext.Actors.FindAsync(id);
+            if (actor == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _databasecontext.Actors.Remove(actor);
+                await _databasecontext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(DeleteConfirmed), new { id = id, saveChangesError = true });
+            }
         }
 
 
