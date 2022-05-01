@@ -88,7 +88,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ActorNumber == id);
+            var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ProducerNumber == id);
             return View(producerToUpdate);
         }
 
