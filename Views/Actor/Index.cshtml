@@ -1,0 +1,55 @@
+﻿@model IEnumerable<dvd_store_adcw2g1.Models.Actor>
+
+@{
+    ViewData["Title"] = "Actors";
+}
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 10%;">
+
+    <h1>Actors</h1>
+    
+    <a asp-action="Create">
+        <input type="button" value="Add New" class="btn btn-dark" />
+        </a>
+</div>
+<div class="d-flex flex-row-reverse" style="width:90%">
+    <form asp-controller="Actor" asp-action="Index">
+    <p>
+        <input type="text" name="SearchString" placeholder="Enter Surname"/>
+        <input type="submit" value="Search" />
+    </p>
+</form>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.ActorSurname)*@ Sur Name
+            </th>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.ActorFirstName)*@ First Name
+            </th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActorSurname)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.ActorNumber">@Html.DisplayFor(modelItem => item.ActorFirstName)</a>
+            </td>
+            <td>
+                <a asp-action="EditPost" asp-route-id="@item.ActorNumber"><i class="fa-duotone fa-pen-to-square"></i></a> |
+                
+                <a asp-action="Delete" asp-route-id="@item.ActorNumber"><i class="fa-duotone fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>
+
