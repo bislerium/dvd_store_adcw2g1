@@ -454,3 +454,24 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 |.bin
+
+.vs/dvd_store_adcw2g1/DesignTimeBuild/.dtbcache.v2
+.vs/dvd_store_adcw2g1/v17/.futdcache.v1
+.vs/dvd_store_adcw2g1/v17/.suo
+
+dvd_store_adcw2g1/bin/Debug/net6.0/appsettings.json
+dvd_store_adcw2g1/bin/Debug/net6.0/dvd_store_adcw2g1.dll
+dvd_store_adcw2g1/bin/Debug/net6.0/dvd_store_adcw2g1.exe
+dvd_store_adcw2g1/bin/Debug/net6.0/dvd_store_adcw2g1.pdb
+dvd_store_adcw2g1/bin/Debug/net6.0/dvd_store_adcw2g1.staticwebassets.runtime.json
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.GeneratedMSBuildEditorConfig.editorconfig
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.csproj.AssemblyReference.cache
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.csproj.CoreCompileInputs.cache
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.dll
+dvd_store_adcw2g1/obj/Debug/net6.0/dvd_store_adcw2g1.pdb
+dvd_store_adcw2g1/obj/Debug/net6.0/project.razor.json
+dvd_store_adcw2g1/obj/Debug/net6.0/ref/dvd_store_adcw2g1.dll
+dvd_store_adcw2g1/obj/Debug/net6.0/refint/dvd_store_adcw2g1.dll
+dvd_store_adcw2g1/obj/Debug/net6.0/staticwebassets.build.json
+dvd_store_adcw2g1/obj/Debug/net6.0/staticwebassets.development.json
+dvd_store_adcw2g1/obj/staticwebassets.pack.sentinel  
