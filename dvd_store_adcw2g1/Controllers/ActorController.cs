@@ -13,15 +13,41 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _databasecontext.Actors.ToListAsync());
+            if (HttpContext.Session.GetString("role") == null)
+            { // for controller
+                return RedirectToAction(controllerName: "Home", actionName: "Index");
+            }
+            else
+            {
+                
+                var actor = from m in _databasecontext.Actors
+                            select m;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    actor = actor.Where(s => s.ActorSurname!.Contains(searchString));
+                }
+
+                return View(await actor.ToListAsync());
+                //return View(await _databasecontext.Actors.ToListAsync());
+            }
+
         }
 
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            if (HttpContext.Session.GetString("role") == null)
+            { // for controller
+                return RedirectToAction(controllerName: "Home", actionName: "Index");
+            }
+            else
+            {
+                return View();
+            }
+            
 
         }
 
