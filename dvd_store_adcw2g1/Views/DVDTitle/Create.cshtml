@@ -13,19 +13,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
               <div class="form-group">
-                <label asp-for="Producer" class="control-label"></label>
-                <select asp-for="Producer" class="form-control" asp-items="ViewBag.ProducerNumber"></select>
-                <span asp-validation-for="Producer" class="text-danger"></span>
+                <label asp-for="ProducerNumber" class="control-label"></label>
+                <select asp-for="ProducerNumber" class="form-control" asp-items="ViewBag.ProducerNumber"></select>
+                <span asp-validation-for="ProducerNumber" class="text-danger"></span>
             </div>
               <div class="form-group">
-                <label asp-for="DVDCategory" class="control-label"></label>
-                <select asp-for="DVDCategory" class="form-control" asp-items="ViewBag.CategoryNumber"></select>
-                <span asp-validation-for="DVDCategory" class="text-danger"></span>
+                <label asp-for="CategoryNumber" class="control-label"></label>
+                <select asp-for="CategoryNumber" class="form-control" asp-items="ViewBag.CategoryNumber"></select>
+                <span asp-validation-for="CategoryNumber" class="text-danger"></span>
             </div>
               <div class="form-group">
-                <label asp-for="Studio" class="control-label"></label>
-                <select asp-for="Studio" class="form-control" asp-items="ViewBag.StudioNumber"></select>
-                <span asp-validation-for="Studio" class="text-danger"></span>
+                <label asp-for="StudioNumber" class="control-label"></label>
+                <select asp-for="StudioNumber" class="form-control" asp-items="ViewBag.StudioNumber"></select>
+                <span asp-validation-for="StudioNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateReleased" class="control-label"></label>
