@@ -9,6 +9,12 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int LoanNumber { get; set; }
 
+        public int LoanTypeNumber { get; set; }
+
+        public int CopyNumber { get; set; }
+
+        public int MemberNumber { get; set; }
+
         [ForeignKey("LoanTypeNumber")]
         public LoanType LoanType { get; set; }
 
