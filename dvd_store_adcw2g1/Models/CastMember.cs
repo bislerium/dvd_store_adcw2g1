@@ -9,6 +9,10 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int CastMemberNumber { get; set; }
 
+        public int DVDNumber { get; set; }
+
+        public int ActorNumber { get; set; }
+
 
         [ForeignKey("DVDNumber")]
         public DVDTitle DVDTitle { get; set; }

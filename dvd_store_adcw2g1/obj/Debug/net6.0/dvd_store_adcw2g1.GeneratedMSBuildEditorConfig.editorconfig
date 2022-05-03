@@ -31,8 +31,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/castmember/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcY2FzdG1lbWJlclxJbmRleC5jc2h0bWw=
+[C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/CastMember/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FzdE1lbWJlclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/CastMember/DeleteConfirmed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FzdE1lbWJlclxEZWxldGVDb25maXJtZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/CastMember/EditPost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FzdE1lbWJlclxFZGl0UG9zdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/CastMember/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FzdE1lbWJlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/Documents/GitHub/Test/dvd_store_adcw2g1/dvd_store_adcw2g1/Views/DVDCategory/Create.cshtml]
