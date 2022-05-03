@@ -12,7 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model.DVDTitleName)
+            </th>
               <th>
                 @Html.DisplayNameFor(model => model.Producer.ProducerName)
             </th>
@@ -37,6 +39,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.DVDTitleName)
+            </td>
              <td>
                 @Html.DisplayFor(modelItem => item.Producer.ProducerName)
             </td>

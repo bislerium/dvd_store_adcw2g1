@@ -13,6 +13,11 @@
         <form asp-action="EditPost">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DVDNumber" />
+            <div class="form-group">
+                <label asp-for="DVDTitleName" class="control-label"></label>
+                <input asp-for="DVDTitleName" class="form-control" />
+                <span asp-validation-for="DVDTitleName" class="text-danger"></span>
+            </div>
              <div class="form-group">
                 <label asp-for="ProducerNumber" class="control-label"></label>
                 <select asp-for="ProducerNumber" class="form-control" asp-items="ViewBag.ProducerNumber"></select>

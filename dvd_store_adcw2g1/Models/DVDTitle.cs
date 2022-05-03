@@ -9,6 +9,8 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int DVDNumber { get; set; }
 
+        public string DVDTitleName { get; set; }
+
         public int ProducerNumber { get; set; }
 
         public int CategoryNumber { get; set; }

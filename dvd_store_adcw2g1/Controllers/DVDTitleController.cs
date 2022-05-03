@@ -32,7 +32,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DVDNumber,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
+        public async Task<IActionResult> Create([Bind("DVDNumber,DVDTitleName,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
 
         {
             try
