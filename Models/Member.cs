@@ -6,7 +6,10 @@ namespace dvd_store_adcw2g1.Models
     public class Member
     {
         [Key]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int MemberNumber { get; set; }
+
+        public int MembershipCategoryNumber { get; set; }
 
         [ForeignKey("MembershipCategoryNumber")]
         public MembershipCategory MembershipCategory { get; set; }
