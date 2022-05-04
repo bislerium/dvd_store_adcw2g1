@@ -1,0 +1,67 @@
+﻿@model IEnumerable<dvd_store_adcw2g1.Models.Loan>
+
+@{
+    ViewData["Title"] = "Function3";
+}
+
+<h1>Function3</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.DVDCopy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.DVDCopy.DVDTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateReturned)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.DVDCopy.CopyNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.DVDCopy.DVDTitle.DVDTitleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateReturned)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LoanNumber">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LoanNumber">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanNumber">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

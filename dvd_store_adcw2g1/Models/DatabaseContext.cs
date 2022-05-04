@@ -12,7 +12,7 @@ namespace dvd_store_adcw2g1.Models
 
         public DbSet<Actor> Actors { get; set; }
 
-        public DbSet<CastMember> CastMembers { get; set; }
+        public DbSet<CastMember> CastMembers { get; set; } 
 
         public DbSet<DVDCategory> DVDCategories { get; set; }
 

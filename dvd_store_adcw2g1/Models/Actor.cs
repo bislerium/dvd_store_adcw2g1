@@ -8,7 +8,7 @@ namespace dvd_store_adcw2g1.Models
         [Key]
 
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
-        public int ActorNumber { get; set; }
+        public int ActorNumber { get; set; }  
 
         public string ActorSurname { get; set; }
 
