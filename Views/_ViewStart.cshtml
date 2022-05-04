@@ -1,3 +1,16 @@
-﻿@{
-    Layout = "_Layout";
+﻿
+
+@using Microsoft.AspNetCore.Http;
+
+
+@{
+    @if(@Context.Session.GetString("role") == "Admin")
+    {
+        Layout = "_Layout";
+    }
+    else
+    {
+        Layout = "_Layout_Auth";
+    }
+
 }

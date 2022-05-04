@@ -1,5 +1,6 @@
 ﻿using dvd_store_adcw2g1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace dvd_store_adcw2g1.Controllers
@@ -8,14 +9,24 @@ namespace dvd_store_adcw2g1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DatabaseContext databaseContext;
+
+        public HomeController(ILogger<HomeController> logger, DatabaseContext db)
         {
             _logger = logger;
+            databaseContext = db;
         }
 
         public IActionResult Index()
         {
-            return View();
+            if (HttpContext.Session.GetString("role") == null)
+            { // for controller
+                return View();
+            }
+            else
+            {
+                return RedirectToAction(controllerName: "Actor", actionName: "Index");
+            }
         }
 
         public IActionResult Privacy()
@@ -29,13 +40,41 @@ namespace dvd_store_adcw2g1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult Login(string username, string userpassword)
+        {
+
+            var blog = databaseContext.Users
+            .Where(b => b.UserName == username).Where(c => c.UserPassword == userpassword).FirstOrDefault();
+
+            var data = blog;
+
+            if (data != null && data.UserName == username && data.UserPassword == userpassword)
+            {
+                HttpContext.Session.SetString("role", data.UserType);
+                HttpContext.Session.SetString("userid", data.UserNumber.ToString());
+                return RedirectToAction(controllerName: "actor", actionName: "Index");
+            }
+            else
+            {
+                return View("Index");
+            }
+
+        }
+
+        public IActionResult Create(User user)
+        {
+
+            user.UserName = user.UserName;
+            user.UserType = "Admin";
+            user.UserPassword = user.UserPassword;
 
 
+            databaseContext.Users.Add(user);
+            databaseContext.SaveChanges();
 
 
-
-
-
+            return View("Index");
+        }
 
     }
 }
