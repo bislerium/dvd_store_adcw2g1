@@ -76,7 +76,18 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await students.ToListAsync());
         }
 
+        public async Task<IActionResult> Function5(int searchString)
+        {
+            var databasecontext = from s in _databasecontext.Loans.Include(p => p.LoanType).Include(p => p.DVDCopy).Include(p => p.Member) select s;
 
+            if (!String.IsNullOrEmpty(searchString.ToString()))
+            {
+                databasecontext = databasecontext.Where(s => s.DVDCopy.CopyNumber.ToString().Contains(searchString.ToString()));
+
+            }
+
+            return View(await databasecontext.ToListAsync());
+        }
 
     }
     
