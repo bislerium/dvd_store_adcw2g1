@@ -6,7 +6,7 @@ namespace dvd_store_adcw2g1.Models
     public class Producer
     {
         [Key]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProducerNumber { get; set; }
 
         public string ProducerName { get; set; }

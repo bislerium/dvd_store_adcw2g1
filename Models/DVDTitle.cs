@@ -6,7 +6,7 @@ namespace dvd_store_adcw2g1.Models
     public class DVDTitle
     {
         [Key]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DVDNumber { get; set; }
 
         public string DVDTitleName { get; set; }

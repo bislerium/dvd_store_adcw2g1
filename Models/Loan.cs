@@ -28,6 +28,6 @@ namespace dvd_store_adcw2g1.Models
 
         public DateTime DateDue { get; set; }
 
-        public DateTime DateReturned { get; set; }
+        public DateTime? DateReturned { get; set; }
     }
 }
