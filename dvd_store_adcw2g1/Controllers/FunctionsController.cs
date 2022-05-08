@@ -29,7 +29,21 @@ namespace dvd_store_adcw2g1.Controllers
                 return View(await students.ToListAsync());
             }
 
+        public async Task<IActionResult> Function2()
+        {
+            var person = (from e in _databasecontext.DVDTitles
+                          join p in _databasecontext.CastMembers
+                          on e.DVDNumber equals p.DVDNumber
+                          join s in _databasecontext.DVDCopies.Where(c => _databasecontext.Loans.Any(l => (c.CopyNumber == l.CopyNumber && l.DateReturned != null)))
+                          on e.DVDNumber equals s.DVDNumber
+                          join t in _databasecontext.Actors
+                          on p.ActorNumber equals t.ActorNumber
+                          select new  { DVDTitle = e, ActorSurname = t }
+                          );
 
+            ViewData["person"] = person;
+            return View();
+        }
 
         public async Task<IActionResult> Function3(string searchString)
         {
@@ -88,6 +102,24 @@ namespace dvd_store_adcw2g1.Controllers
 
             return View(await databasecontext.ToListAsync());
         }
+
+
+
+
+        public async Task<IActionResult> Test(string searchString)
+        {
+            var person = (from e in _databasecontext.DVDTitles
+                          join p in _databasecontext.DVDCopies
+                          on e.DVDNumber equals p.DVDNumber
+                        
+                          select new { DVDCopy = p.DatePurchased }
+                          ).ToList();
+
+
+            return Json(person);
+        }
+
+
 
     }
     

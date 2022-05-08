@@ -2,6 +2,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using dvd_store_adcw2g1.Models;
 
 namespace dvd_store_adcw2g1.Models
 {
@@ -38,5 +39,8 @@ namespace dvd_store_adcw2g1.Models
         {
             Database.EnsureCreated();
         }
+
+
+        public DbSet<dvd_store_adcw2g1.Models.DVDonShelves> DVDonShelves { get; set; }
     }
 }

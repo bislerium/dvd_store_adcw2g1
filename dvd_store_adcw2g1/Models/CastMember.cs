@@ -21,6 +21,8 @@ namespace dvd_store_adcw2g1.Models
 
         [ForeignKey("ActorNumber")]
         public Actor Actor { get; set; }
-
+       
+        
+        
     }
 }
