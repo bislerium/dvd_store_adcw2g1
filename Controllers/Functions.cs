@@ -25,6 +25,39 @@ namespace dvd_store_adcw2g1.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Function1(String lastName) {
+            var query = from a in _databasecontext.Actors
+                        join cm in _databasecontext.CastMembers
+                        on a.ActorNumber equals cm.ActorNumber
+                        join dt in _databasecontext.DVDTitles
+                        on cm.DVDNumber equals dt.DVDNumber
+                        where a.ActorSurname == lastName
+                        select dt;
+            return View(await query.ToListAsync());
+        }
+
+        public async Task<IActionResult> Function2(String lastName)
+        {
+            var query = from a in _databasecontext.Actors
+                        join cm in _databasecontext.CastMembers
+                        on a.ActorNumber equals cm.ActorNumber
+                        join dt in _databasecontext.DVDTitles
+                        on cm.DVDNumber equals dt.DVDNumber
+                        join dc in _databasecontext.DVDCopies
+                        on dt.DVDNumber equals dc.DVDNumber
+                        join l in _databasecontext.Loans
+                        on dc.CopyNumber equals l.CopyNumber
+                        where a.ActorSurname == lastName && l.DateReturned != null
+                        group l by dt into dtg
+                        select new
+                        {
+                            DVDTitle = dtg.Key,
+                            TotalDVDCopies = dtg.Count(),
+                        };
+              return View(await query.ToListAsync());
+
+        }
+
         public IActionResult Function6Form()
         {
             ViewData["DVDCopies"] = new SelectList(_databasecontext.DVDCopies.Select(
@@ -113,7 +146,8 @@ namespace dvd_store_adcw2g1.Controllers
                     }
                 }
             }
-            else {
+            else
+            {
                 ViewData["message"] = "Something went wrong!";
                 ViewData["error"] = true;
             }
@@ -142,9 +176,10 @@ namespace dvd_store_adcw2g1.Controllers
                     var penaltyChargeRate = loan.DVDCopy.DVDTitle.PenaltyCharge;
                     var penaltyAmount = days * penaltyChargeRate;
                     ViewData["message"] = $"{loan.Member.MembershipFirstName} is penalized with amount: {penaltyAmount} for exceeding due date by {days} days at {penaltyChargeRate}/days.";
-                }                
+                }
             }
-            else {
+            else
+            {
                 ViewData["message"] = "DVD Copy already returned";
             }
             return View();
@@ -164,7 +199,7 @@ namespace dvd_store_adcw2g1.Controllers
             }
             loan.DateReturned = DateTime.Now;
             _databasecontext.Loans.Update(loan);
-            await _databasecontext.SaveChangesAsync();            
+            await _databasecontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -215,19 +250,19 @@ namespace dvd_store_adcw2g1.Controllers
         [HttpPost]
         public async Task<IActionResult> Function9([Bind("DVDTitleName,Producer,DVDCategory,Studio,Actors,DateReleased,StandardCharge,PenaltyCharge")] NewDVDTiTle dvdTitle)
         {
-            
+
             String producer = ToTitleCase(dvdTitle.Producer);
             String dvdCategory = ToTitleCase(dvdTitle.DVDCategory);
             String studio = ToTitleCase(dvdTitle.Studio);
-            List < String > actors = dvdTitle.Actors.ConvertAll(value => ToTitleCase(value));
+            List<String> actors = dvdTitle.Actors.ConvertAll(value => ToTitleCase(value));
             try
             {
-                var producerRecord = (await _databasecontext.Producers.FirstOrDefaultAsync(p => p.ProducerName == producer))  
-                    ?? (await _databasecontext.Producers.AddAsync(new Producer() { ProducerName = producer })).Entity;        
-                var studioRecord = (await _databasecontext.Studios.FirstOrDefaultAsync(s => s.StudioName == studio)) 
+                var producerRecord = (await _databasecontext.Producers.FirstOrDefaultAsync(p => p.ProducerName == producer))
+                    ?? (await _databasecontext.Producers.AddAsync(new Producer() { ProducerName = producer })).Entity;
+                var studioRecord = (await _databasecontext.Studios.FirstOrDefaultAsync(s => s.StudioName == studio))
                     ?? (await _databasecontext.Studios.AddAsync(new Studio() { StudioName = studio })).Entity;
                 var dvdCategoryRecord = await _databasecontext.DVDCategories.FirstOrDefaultAsync(c => c.CategoryDescription == dvdCategory);
-                var dvdTitleRecord = (await _databasecontext.DVDTitles.AddAsync(new DVDTitle() 
+                var dvdTitleRecord = (await _databasecontext.DVDTitles.AddAsync(new DVDTitle()
                 {
                     DVDTitleName = dvdTitle.DVDTitleName,
                     DateReleased = dvdTitle.DateReleased,
@@ -235,16 +270,17 @@ namespace dvd_store_adcw2g1.Controllers
                     PenaltyCharge = dvdTitle.PenaltyCharge,
                     Producer = producerRecord,
                     Studio = studioRecord,
-                    DVDCategory = dvdCategoryRecord!,                    
+                    DVDCategory = dvdCategoryRecord!,
                 })).Entity;
-                actors.ForEach(async a => {
+                actors.ForEach(async a =>
+                {
                     List<String> _ = a.Split(' ').ToList();
                     var firstName = _.First();
                     _.RemoveAt(0);
                     var lastName = String.Join(' ', _);
-                    var actorRecord = (await _databasecontext.Actors.FirstOrDefaultAsync(a => a.ActorFirstName == firstName && a.ActorSurname == lastName)) 
-                    ?? (await _databasecontext.Actors.AddAsync(new Actor() { ActorFirstName = firstName, ActorSurname =  lastName})).Entity;
-                    _databasecontext.CastMembers.Add(new CastMember() { DVDTitle = dvdTitleRecord, Actor = actorRecord});
+                    var actorRecord = (await _databasecontext.Actors.FirstOrDefaultAsync(a => a.ActorFirstName == firstName && a.ActorSurname == lastName))
+                    ?? (await _databasecontext.Actors.AddAsync(new Actor() { ActorFirstName = firstName, ActorSurname = lastName })).Entity;
+                    _databasecontext.CastMembers.Add(new CastMember() { DVDTitle = dvdTitleRecord, Actor = actorRecord });
                 });
                 await _databasecontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -270,11 +306,11 @@ namespace dvd_store_adcw2g1.Controllers
         /// Displays a list of all DVD Copies which are more than a year old and which are not currently on loan b.
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
-        public async Task<IActionResult> Function10() 
+        public async Task<IActionResult> Function10()
         {
             var dvdCopies = _databasecontext.DVDCopies;
             var loans = _databasecontext.Loans;
-            var query = from l in loans 
+            var query = from l in loans
                         join d in dvdCopies
                         on l.CopyNumber equals d.CopyNumber
                         where (DateTime.Now - d.DatePurchased).TotalDays > 365 && l.DateReturned != null
@@ -308,26 +344,27 @@ namespace dvd_store_adcw2g1.Controllers
         /// Displays a list of all DVD copies on loan currently, along with total loans, ordered by the date out and title.
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
-        public async Task<IActionResult> Function11() 
+        public async Task<IActionResult> Function11()
         {
             var dvdTitles = _databasecontext.DVDTitles;
             var dvdCopies = _databasecontext.DVDCopies;
             var loans = _databasecontext.Loans;
             var loansPerCopy = from l in loans
-                        group l by l.CopyNumber into lg
-                        select new { 
-                            CopyNumber = lg.Key, 
-                            TotalLoans = lg.Count()
-                        };
+                               group l by l.CopyNumber into lg
+                               select new
+                               {
+                                   CopyNumber = lg.Key,
+                                   TotalLoans = lg.Count()
+                               };
 
             var query = from t in dvdTitles
                         join d in dvdCopies
                         on t.DVDNumber equals d.DVDNumber
-                        join l in loans                        
+                        join l in loans
                         on d.CopyNumber equals l.CopyNumber
                         join c in loansPerCopy
                         on l.CopyNumber equals c.CopyNumber
-                        where l.DateReturned == null  
+                        where l.DateReturned == null
                         orderby l.DateDue, t.DVDTitleName
                         select new DVDCopyLoan()
                         {
@@ -345,7 +382,7 @@ namespace dvd_store_adcw2g1.Controllers
         /// Displays a list of all Members who have not borrowed any DVD in the last 31 days, ignoring any Member who has never borrowed a DVD.
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
-        public async Task<IActionResult> Function12() 
+        public async Task<IActionResult> Function12()
         {
             var loans = _databasecontext.Loans;
             var query = from l in loans
