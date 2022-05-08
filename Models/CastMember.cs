@@ -13,14 +13,12 @@ namespace dvd_store_adcw2g1.Models
 
         public int ActorNumber { get; set; }
 
-
-        [ForeignKey("DVDNumber")]
         [Required]
+        [ForeignKey("DVDNumber")]
         public DVDTitle DVDTitle { get; set; }
 
-
-        [ForeignKey("ActorNumber")]
         [Required]
+        [ForeignKey("ActorNumber")]
         public Actor Actor { get; set; }
 
     }

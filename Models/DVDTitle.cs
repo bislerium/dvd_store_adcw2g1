@@ -18,16 +18,16 @@ namespace dvd_store_adcw2g1.Models
 
         public int StudioNumber { get; set; }
 
-        [ForeignKey("ProducerNumber")]
         [Required]
+        [ForeignKey("ProducerNumber")]
         public Producer Producer { get; set; }
 
-        [ForeignKey("CategoryNumber")]
         [Required]
+        [ForeignKey("CategoryNumber")]
         public DVDCategory DVDCategory { get; set; }
 
-        [ForeignKey("StudioNumber")]
         [Required]
+        [ForeignKey("StudioNumber")]
         public Studio Studio { get; set; }
 
         [Required]

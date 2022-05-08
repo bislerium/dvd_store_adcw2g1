@@ -15,16 +15,16 @@ namespace dvd_store_adcw2g1.Models
 
         public int MemberNumber { get; set; }
 
-        [ForeignKey("LoanTypeNumber")]
         [Required]
+        [ForeignKey("LoanTypeNumber")]
         public LoanType LoanType { get; set; }
 
-        [ForeignKey("CopyNumber")]
         [Required]
+        [ForeignKey("CopyNumber")]
         public DVDCopy DVDCopy { get; set; }
 
-        [ForeignKey("MemberNumber")]
         [Required]
+        [ForeignKey("MemberNumber")]
         public Member Member { get; set; }
 
         [Required]

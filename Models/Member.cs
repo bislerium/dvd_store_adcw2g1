@@ -11,8 +11,8 @@ namespace dvd_store_adcw2g1.Models
 
         public int MembershipCategoryNumber { get; set; }
 
-        [ForeignKey("MembershipCategoryNumber")]
         [Required]
+        [ForeignKey("MembershipCategoryNumber")]
         public MembershipCategory MembershipCategory { get; set; }
 
         [Required]
