@@ -9,7 +9,7 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProducerNumber { get; set; }
 
+        [Required]
         public string ProducerName { get; set; }
-
     }
 }

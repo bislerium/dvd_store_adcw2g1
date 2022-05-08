@@ -1,7 +1,4 @@
-﻿
-
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace dvd_store_adcw2g1.Models
 {
@@ -34,9 +31,6 @@ namespace dvd_store_adcw2g1.Models
 
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
+            : base(options) => Database.EnsureCreated();
     }
 }

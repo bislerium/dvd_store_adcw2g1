@@ -12,8 +12,10 @@ namespace dvd_store_adcw2g1.Models
         public int DVDNumber { get; set; }
 
         [ForeignKey("DVDNumber")]
+        [Required]
         public DVDTitle DVDTitle { get; set; }
 
+        [Required]
         public DateTime DatePurchased { get; set; }
 
     }
