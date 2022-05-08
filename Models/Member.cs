@@ -9,17 +9,22 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int MemberNumber { get; set; }
 
+        [Required]
         public int MembershipCategoryNumber { get; set; }
 
         [ForeignKey("MembershipCategoryNumber")]
         public MembershipCategory MembershipCategory { get; set; }
 
+        [Required]
         public string MembershipLastName { get; set; }
 
+        [Required]
         public string MembershipFirstName { get; set; }
 
+        [Required]
         public string MembershipAddress { get; set; }
 
+        [Required]
         public DateTime MemberDOB { get; set; }
     }
 }

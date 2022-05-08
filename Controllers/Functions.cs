@@ -2,6 +2,7 @@
 using dvd_store_adcw2g1.Models.Others;
 using dvd_store_adcw2g1.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -21,6 +22,100 @@ namespace dvd_store_adcw2g1.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Function6Form()
+        {
+            ViewData["DVDCopies"] = new SelectList(_databasecontext.DVDCopies.Select(
+            c => new
+            {
+                ID = c.DVDNumber,
+                DVDCopyTitle = $"{c.DVDNumber} - {c.DVDTitle.DVDTitleName}"
+            }), "ID", "DVDCopyTitle");
+            ViewData["Members"] = new SelectList(_databasecontext.Members.Select(
+            m => new
+            {
+                ID = m.MemberNumber,
+                MemberTitle = $"{m.MemberNumber} - {m.MembershipFirstName} {m.MembershipLastName}"
+            }), "ID", "MemberTitle");
+            ViewData["LoanTypes"] = new SelectList(_databasecontext.LoanTypes.Select(
+           t => new
+           {
+               ID = t.LoanTypeNumber,
+               LoanTypeTitle = $"{t.LoanTypeNumber} - {t.LoanDuration}, {t.LoanDuration} days"
+           }), "ID", "LoanTypeTitle");
+            return View();
+        }
+
+        /// <summary>
+        /// Allow to issue a DVD Copy on loan to a member.
+        /// If confirm, Loan is saved
+        /// Else, confirmation is asked with a message with loan charges.
+        /// </summary>
+        /// <param name="memberID">ID of the member who is taking a loan</param>
+        /// <param name="dvdCopyID">ID of a DVDCopy record in Database</param>
+        /// <param name="loanTypeID">ID of the Loan-Type chooosed by the member, while taking a DVD copy loan</param>
+        /// <param name="confirm">Confirm Loan</param>
+        /// <returns>Returns the Loan Record or null</returns>
+        public async Task<IActionResult> Function6(int memberID, int dvdCopyID, int loanTypeID, bool confirm = false)
+        {
+            var memberRecord = await _databasecontext.Members.FirstOrDefaultAsync(m => m.MemberNumber == memberID);
+            var dvdCopyRecord = await _databasecontext.DVDCopies.FirstOrDefaultAsync(c => c.DVDNumber == dvdCopyID);
+            var loanTypeRecord = await _databasecontext.LoanTypes.FirstOrDefaultAsync(t => t.LoanTypeNumber == loanTypeID);
+            if (memberRecord != null && dvdCopyRecord != null && loanTypeRecord != null)
+            {
+                var memberAge = (memberRecord.MemberDOB - DateTime.Now).TotalDays / 365;
+                if (dvdCopyRecord.DVDTitle.DVDCategory.IsAgeRestricted && memberAge < 18)
+                {
+                    ViewData["message"] = "Does not meet Age Requirement!";
+                    ViewData["error"] = true;
+                }
+                else
+                {
+                    var query = from l in _databasecontext.Loans
+                                group l by l.MemberNumber into lg
+                                select new
+                                {
+                                    MemberID = lg.Key,
+                                    TotalActiveLoans = lg.Where(l => l.DateReturned == null).Count(),
+                                };
+                    var memberLoans = query.Where(l => l.MemberID == memberID).FirstOrDefault();
+                    if (memberLoans == null || memberLoans.TotalActiveLoans < memberRecord.MembershipCategory.MembershipCategoryTotalLoans)
+                    {
+                        var dateNow = DateTime.Now;
+                        if (confirm)
+                        {
+                            await _databasecontext.Loans.AddAsync(new Loan()
+                            {
+                                LoanType = loanTypeRecord,
+                                DVDCopy = dvdCopyRecord,
+                                Member = memberRecord,
+                                DateOut = dateNow,
+                                DateDue = dateNow.AddDays(loanTypeRecord.LoanDuration),
+                                DateReturned = null,
+                            });
+                            await _databasecontext.SaveChangesAsync();
+                            ViewBag.message = "Successfully Loaned!";
+                            return RedirectToRoute(nameof(Index));
+                        }
+                        else
+                        {
+                            var dvdTitle = dvdCopyRecord.DVDTitle;
+                            ViewData["message"] = $"The amount to pay for the {dvdTitle.DVDTitleName} copy is Rs.{dvdTitle.StandardCharge * loanTypeRecord.LoanDuration} as per the standard charge: Rs.{dvdTitle.StandardCharge}/day for {loanTypeRecord.LoanDuration} days dued at {dateNow.AddDays(loanTypeRecord.LoanDuration)}.";
+                            ViewData["error"] = false;
+                            ViewData["memberID"] = memberID;
+                            ViewData["dvdCopyID"] = dvdCopyID;
+                            ViewData["loanTypeID"] = loanTypeID;
+                            ViewData["confirm"] = true;
+                        }
+                    }
+                }
+            }
+            else {
+                ViewData["message"] = "Something went wrong!";
+                ViewData["error"] = true;
+            }
             return View();
         }
 
@@ -93,7 +188,7 @@ namespace dvd_store_adcw2g1.Controllers
         /// Displays an alphabetic list of all members (including members with no current loans) with all their details(with membership category decoded) and the total number of DVDs they currently have on loan.This report should highlight with the message “Too many DVDs” any member who has more DVDs on loan than they are allowed from their MembershipCategor
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
-        public IActionResult Function8()
+        public async Task<IActionResult> Function8()
         {
             var loans = _databasecontext.Loans;
             var Members = _databasecontext.Members;
@@ -108,7 +203,7 @@ namespace dvd_store_adcw2g1.Controllers
                             TotalActiveLoans = lm.Where(loan => loan.DateReturned == null).Count(),
                         };
 
-            return View(query.ToList());
+            return View(await query.ToListAsync());
         }
 
         /// <summary>
@@ -137,6 +232,9 @@ namespace dvd_store_adcw2g1.Controllers
                     DateReleased = dvdTitle.DateReleased,
                     StandardCharge = dvdTitle.StandardCharge,
                     PenaltyCharge = dvdTitle.PenaltyCharge,
+                    Producer = producerRecord,
+                    Studio = studioRecord,
+                    DVDCategory = dvdCategoryRecord!,                    
                 })).Entity;
                 actors.ForEach(async a => {
                     List<String> _ = a.Split(' ').ToList();
@@ -284,7 +382,6 @@ namespace dvd_store_adcw2g1.Controllers
                         where (DateTime.Now - lg.Max(a => a.DateOut)).TotalDays > 31
                         select lg.First().DVDCopy.DVDTitle;
             return View(await query.ToListAsync());
-        }      
-
+        }
     }
 }

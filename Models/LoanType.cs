@@ -9,8 +9,11 @@ namespace dvd_store_adcw2g1.Models
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int LoanTypeNumber { get; set; }
 
+        [Required]
         public string LoanTypeName { get; set; }
 
-        public string LoanDuration { get; set; }
+        //Loan Duration in Days.
+        [Required]
+        public int LoanDuration { get; set; }
     }
 }

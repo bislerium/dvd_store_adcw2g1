@@ -6,11 +6,13 @@ namespace dvd_store_adcw2g1.Models
     public class DVDCategory
     {
         [Key]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryNumber { get; set; }
 
+        [Required]
         public string CategoryDescription { get; set; }
 
-        public string AgeRestricted { get; set; }
+        [Required]
+        public bool IsAgeRestricted { get; set; }
     }
 }
