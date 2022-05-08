@@ -41,6 +41,6 @@ namespace dvd_store_adcw2g1.Models
         }
 
 
-        public DbSet<dvd_store_adcw2g1.Models.DVDonShelves> DVDonShelves { get; set; }
+       
     }
 }
