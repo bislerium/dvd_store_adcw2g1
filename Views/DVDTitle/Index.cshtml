@@ -4,68 +4,177 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<script>
+    $(document).ready(function(){  
+    alert($('#input').tagsinput('items'));
+    });
+</script>
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <h1>DVD</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <form asp-controller="Member" asp-action="Index" class="d-flex flex-row-reverse">
+        <input type="search" name="SearchString" placeholder="Enter Surname" id="search-focus" id="form1" class="form-control"/>
+        <button type="submit" value="Search" class="btn btn-dark">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addmodel"><i class="fas fa-add"></i></button>
+</div>
+
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DVDTitleName)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDTitleName)*@ Title
             </th>
-              <th>
-                @Html.DisplayNameFor(model => model.Producer.ProducerName)
+              <th scope="col">
+                @*@Html.DisplayNameFor(model => model.Producer.ProducerName)*@ Producer
+            </th >
+             <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDCategory.CategoryDescription)*@ Category
             </th>
-             <th>
-                @Html.DisplayNameFor(model => model.DVDCategory.CategoryDescription)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.Studio.StudioName)*@ Studio
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Studio.StudioName)
+              <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DateReleased)*@ Release Date
             </th>
-              <th>
-                @Html.DisplayNameFor(model => model.DateReleased)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.StandardCharge)*@ Standard
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StandardCharge)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.PenaltyCharge)*@ Penalty
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PenaltyCharge)
-            </th>
-            <th></th>
+            <th scope="col"> Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-             <td>
-                @Html.DisplayFor(modelItem => item.DVDTitleName)
+    @foreach (var item in Model) {
+            <tr>
+                 <td>
+                    <a asp-action="Details" asp-route-id="@item.DVDNumber">@Html.DisplayFor(modelItem => item.DVDTitleName)</a>
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Producer.ProducerName)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.DVDCategory.CategoryDescription)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Studio.StudioName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateReleased)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StandardCharge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PenaltyCharge)
+                </td>
+                <td>
+
+                <a asp-action="EditPost" asp-route-id="@item.DVDNumber"><i class="fas fa-pen-to-square"></i></a> |
+                
+                <a asp-action="DeleteConfirmed" asp-route-id="@item.DVDNumber"><i class="fas fa-trash"></i></a>
             </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.Producer.ProducerName)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.DVDCategory.CategoryDescription)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.Studio.StudioName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateReleased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StandardCharge)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PenaltyCharge)
-            </td>
-            <td>
-                <a asp-action="EditPost" asp-route-id="@item.DVDNumber">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DVDNumber">Details</a> |
-                <a asp-action="DeleteConfirmed" asp-route-id="@item.DVDNumber">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<!--Add-->
+<div class="modal fade" id="addmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <form asp-action="Create">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add DVD</h5>
+@*        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>*@
+      </div>
+      <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="DVDTitleName" class="col-form-label">Title</label>
+                <input name="DVDTitleName" class="form-control" required/>
+                <span for="DVDTitleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Producer" class="col-form-label">Producer</label>
+                <input name="Producer" type="text" class="form-control" list="producer"/>
+                    
+                    <datalist id="producer">
+                            @foreach (var producer in (ViewData["ProducerNumber"] as IEnumerable<String>)!)
+                            {
+                                <option value="@producer"/>
+                            }
+                              
+                    </datalist>
+                <span for="Producer" class="text-danger"></span>
+            </div>
+              <div class="form-group">
+                <label for="DVDCategory" class="col-form-label">Category</label>
+                <select name="DVDCategory" class="form-control" asp-items="ViewBag.CategoryNumber"></select>
+                <span for="DVDCategory" class="text-danger"></span>
+            </div>
+              <div class="form-group">
+                <label for="Studio" class="col-form-label">Studio</label>
+                <input name="Studio" type="text" class="form-control" list="studio"/>
+                    
+                <datalist id="studio">
+                     @foreach (var studio in (ViewData["StudioNumber"] as IEnumerable<String>)!)
+                            {
+                                <option value="@studio"/>
+                            }
+                              
+                 </datalist>
+                <span for="Studio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Actors" class="col-form-label">Actors</label>
+                <div>
+                    <select multiple id="input" name="Actors" type="text" data-role="tagsinput" class="form-control"/>
+                </div>
+                <span for="Actors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="DateReleased" class="col-form-label">Release Date</label>
+                <input type="date" name="DateReleased" class="form-control" />
+                <span for="DateReleased" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="StandardCharge" class="col-form-label">Standard Charge</label>
+                <div class="input-group">
+                    <span class="input-group-text">Rs.</span>
+                    <input type="number" name="StandardCharge" class="form-control" />
+                </div>
+                <span for="StandardCharge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="PenaltyCharge" class="col-form-label">Penalty</label>
+                <div class="input-group">
+                    <span class="input-group-text">Rs.</span>
+                    <input type="number" name="PenaltyCharge" class="form-control" />
+                </div>
+                <span for="PenaltyCharge" class="text-danger"></span>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" value="Create" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Font Awesome icon-->
+<script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>

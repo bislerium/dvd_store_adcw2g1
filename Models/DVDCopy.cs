@@ -14,6 +14,7 @@ namespace dvd_store_adcw2g1.Models
         [ForeignKey("DVDNumber")]
         public DVDTitle DVDTitle { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime DatePurchased { get; set; }
 
     }

@@ -18,13 +18,6 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await _databasecontext.Users.ToListAsync());
         }
 
-
-        public async Task<IActionResult> Create()
-        {
-            return View();
-
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)

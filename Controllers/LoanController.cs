@@ -17,18 +17,10 @@ namespace dvd_store_adcw2g1.Controllers
         public async Task<IActionResult> Index()
         {
             var databasecontext = _databasecontext.Loans.Include(p => p.LoanType).Include(p => p.DVDCopy).Include(p => p.Member);
-            return View(await databasecontext.ToListAsync());
-        }
-
-
-        public async Task<IActionResult> Create()
-        {
             ViewData["LoanTypeNumber"] = new SelectList(_databasecontext.LoanTypes, "LoanTypeNumber", "LoanTypeName");
             ViewData["CopyNumber"] = new SelectList(_databasecontext.DVDCopies, "CopyNumber", "DatePurchased");
-            ViewData["MemberNumber"] = new SelectList(_databasecontext.Members, "MemberNumber","MembershipLastName");
-
-            return View();
-
+            ViewData["MemberNumber"] = new SelectList(_databasecontext.Members, "MemberNumber", "MembershipLastName");
+            return View(await databasecontext.ToListAsync());
         }
 
         [HttpPost]
@@ -38,8 +30,6 @@ namespace dvd_store_adcw2g1.Controllers
         {
             try
             {
-
-
                 _databasecontext.Add(loan);
                 await _databasecontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

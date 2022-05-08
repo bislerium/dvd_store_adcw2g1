@@ -119,6 +119,10 @@ namespace dvd_store_adcw2g1.Migrations
                     b.Property<int>("CategoryNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("DVDTitleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateReleased")
                         .HasColumnType("datetime2");
 

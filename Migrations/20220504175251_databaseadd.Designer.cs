@@ -12,8 +12,8 @@ using dvd_store_adcw2g1.Models;
 namespace dvd_store_adcw2g1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220411023658_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220504175251_databaseadd")]
+    partial class databaseadd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,6 +120,10 @@ namespace dvd_store_adcw2g1.Migrations
 
                     b.Property<int>("CategoryNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("DVDTitleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateReleased")
                         .HasColumnType("datetime2");

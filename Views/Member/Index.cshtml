@@ -1,33 +1,42 @@
 ﻿@model IEnumerable<dvd_store_adcw2g1.Models.Member>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Members";
 }
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <h1>Members</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <form asp-controller="Member" asp-action="Index" class="d-flex flex-row-reverse">
+        <input type="search" name="SearchString" placeholder="Enter Surname" id="search-focus" id="form1" class="form-control"/>
+        <button type="submit" value="Search" class="btn btn-dark">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addmember"><i class="fas fa-add"></i></button>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+<table class="table table-hover table-responsive-md">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MembershipCategory)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipCategory)*@ Category
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MembershipLastName)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipLastName)*@ Last Name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MembershipFirstName)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipFirstName)*@ First Name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MembershipAddress)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipAddress)*@ Address
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberDOB)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MemberDOB)*@ D.O.B
             </th>
-            <th></th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.MembershipLastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MembershipFirstName)
+                <a asp-action="Details" asp-route-id="@item.MemberNumber">@Html.DisplayFor(modelItem => item.MembershipFirstName)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MembershipAddress)
@@ -49,11 +58,62 @@
                 @Html.DisplayFor(modelItem => item.MemberDOB)
             </td>
             <td>
-                <a asp-action="EditPost" asp-route-id="@item.MemberNumber">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MemberNumber">Details</a> |
-                <a asp-action="DeleteConfirmed" asp-route-id="@item.MemberNumber">Delete</a>
+                <a asp-action="EditPost" asp-route-id="@item.MemberNumber"><i class="fas fa-pen-to-square"></i></a> |
+                <a asp-action="DeleteConfirmed" asp-route-id="@item.MemberNumber"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+<div class="modal fade" id="addmember" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <form asp-action="Create">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Member</h5>
+@*        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>*@
+      </div>
+      <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="MembershipCategoryNumber" class="control-label">Membership Category</label>
+                <select name="MembershipCategoryNumber" class ="form-select" asp-items="ViewBag.MembershipCategoryNumber" required>
+@*                            @foreach (var item in ViewBag.MembershipCategoryNumber)
+                            {
+                                <option value="@item">@item</option>
+                            }*@
+                        </select>
+            </div>
+            <div class="form-group">
+                <label for="MembershipLastName" class="control-label">Last Name</label>
+                <input name="MembershipLastName" class="form-control" required/>
+                <span for="MembershipLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="MembershipFirstName" class="control-label">First Name</label>
+                <input name="MembershipFirstName" class="form-control" required/>
+                <span for="MembershipFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="MembershipAddress" class="control-label">Address</label>
+                <input name="MembershipAddress" class="form-control" required/>
+                <span for="MembershipAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="MemberDOB" class="control-label">D.O.B</label>
+                <input type="date" name="MemberDOB" class="form-control" required/>
+                <span for="MemberDOB" class="text-danger"></span>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" value="Create" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>

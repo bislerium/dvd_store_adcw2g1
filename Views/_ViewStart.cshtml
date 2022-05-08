@@ -4,9 +4,13 @@
 
 
 @{
-    @if(@Context.Session.GetString("role") == "Admin")
+    @if (@Context.Session.GetString("role") == "Admin")
     {
         Layout = "_Layout";
+    }
+    else if (@Context.Session.GetString("role") == "User")
+    {
+        Layout = "_Layout_user";
     }
     else
     {

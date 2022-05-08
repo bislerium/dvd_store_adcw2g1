@@ -11,6 +11,14 @@ namespace dvd_store_adcw2g1.Controllers
 
         private readonly DatabaseContext databaseContext;
 
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Remove("userid");
+            HttpContext.Session.Remove("role");
+
+            return RedirectToAction(controllerName: "Home", actionName: "Index");
+        }
+
         public HomeController(ILogger<HomeController> logger, DatabaseContext db)
         {
             _logger = logger;
@@ -25,11 +33,17 @@ namespace dvd_store_adcw2g1.Controllers
             }
             else
             {
-                return RedirectToAction(controllerName: "Actor", actionName: "Index");
+                //return RedirectToAction(controllerName: "Actor", actionName: "Index");
+                return View("Dashboard");
             }
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Dashboard()
         {
             return View();
         }
@@ -52,7 +66,8 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 HttpContext.Session.SetString("role", data.UserType);
                 HttpContext.Session.SetString("userid", data.UserNumber.ToString());
-                return RedirectToAction(controllerName: "actor", actionName: "Index");
+                //return RedirectToAction(controllerName: "actor", actionName: "Index");
+                return View("Dashboard");
             }
             else
             {

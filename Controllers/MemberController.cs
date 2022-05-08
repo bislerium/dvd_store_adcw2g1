@@ -16,18 +16,11 @@ namespace dvd_store_adcw2g1.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewData["MembershipCategoryNumber"] = new SelectList(_databasecontext.MembershipCategories, "MembershipCategoryNumber", "MembershipCategoryDescription");
             var databasecontext = _databasecontext.Members.Include(p => p.MembershipCategory);
             return View(await databasecontext.ToListAsync());
         }
 
-
-        public async Task<IActionResult> Create()
-        {
-            ViewData["MembershipCategoryNumber"] = new SelectList(_databasecontext.MembershipCategories, "MembershipCategoryNumber", "MembershipCategoryDescription");
-         
-            return View();
-
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

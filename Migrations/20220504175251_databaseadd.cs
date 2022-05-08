@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace dvd_store_adcw2g1.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class databaseadd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -135,6 +135,7 @@ namespace dvd_store_adcw2g1.Migrations
                 {
                     DVDNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DVDTitleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProducerNumber = table.Column<int>(type: "int", nullable: false),
                     CategoryNumber = table.Column<int>(type: "int", nullable: false),
                     StudioNumber = table.Column<int>(type: "int", nullable: false),

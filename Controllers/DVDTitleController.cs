@@ -1,7 +1,9 @@
 ﻿using dvd_store_adcw2g1.Models;
+using dvd_store_adcw2g1.Models.Others;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace dvd_store_adcw2g1.Controllers
 {
@@ -9,55 +11,90 @@ namespace dvd_store_adcw2g1.Controllers
     {
 
         private readonly DatabaseContext _databasecontext;
+        private readonly TextInfo _textInfo;
 
         public DVDTitleController(DatabaseContext context)
         {
             _databasecontext = context;
+            _textInfo = new CultureInfo("en-US", false).TextInfo;
         }
         public async Task<IActionResult> Index()
         {
             var databasecontext = _databasecontext.DVDTitles.Include(p => p.Producer).Include(p => p.DVDCategory).Include(p => p.Studio);
+            ViewData["ProducerNumber"] = await (from p in _databasecontext.Producers
+                                          select p.ProducerName).ToListAsync();
+            ViewData["CategoryNumber"] = new SelectList(_databasecontext.DVDCategories, "CategoryNumber", "CategoryDescription");
+            ViewData["StudioNumber"] = await (from s in _databasecontext.Studios
+                                              select s.StudioName).ToListAsync();
             return View(await databasecontext.ToListAsync());
         }
-
-
-        public async Task<IActionResult> Create()
-        {
-            ViewData["ProducerNumber"] = new SelectList(_databasecontext.Producers, "ProducerNumber", "ProducerName");
-            ViewData["CategoryNumber"] = new SelectList(_databasecontext.DVDCategories, "CategoryNumber", "CategoryDescription");
-            ViewData["StudioNumber"] = new SelectList(_databasecontext.Studios, "StudioNumber", "StudioName");
-            return View();
-
-        }
-
+        private String ToTitleCase(String @string) => _textInfo.ToTitleCase(@string.Trim());
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DVDNumber,DVDTitleName,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
-
+        public async Task<IActionResult> Create([Bind("DVDTitleName,Producer,DVDCategory,Studio,Actors,DateReleased,StandardCharge,PenaltyCharge")] NewDVDTiTle dvdTitle)
         {
+            Console.WriteLine(dvdTitle);
+            String producer = ToTitleCase(dvdTitle.Producer);
+            String studio = ToTitleCase(dvdTitle.Studio);
+            List<String> actors = dvdTitle.Actors.ConvertAll(value => ToTitleCase(value));
             try
             {
-              
-                    
-                    _databasecontext.Add(dvdtitle);
-                    await _databasecontext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                
+                var producerRecord = (await _databasecontext.Producers.FirstOrDefaultAsync(p => p.ProducerName == producer))
+                    ?? (await _databasecontext.Producers.AddAsync(new Producer() { ProducerName = producer })).Entity;
+                var studioRecord = (await _databasecontext.Studios.FirstOrDefaultAsync(s => s.StudioName == studio))
+                    ?? (await _databasecontext.Studios.AddAsync(new Studio() { StudioName = studio })).Entity;
+                var dvdCategoryRecord = await _databasecontext.DVDCategories.FirstOrDefaultAsync(c => c.CategoryNumber == dvdTitle.DVDCategory);
+                var dvdTitleRecord = (await _databasecontext.DVDTitles.AddAsync(new DVDTitle()
+                {
+                    DVDTitleName = dvdTitle.DVDTitleName,
+                    Producer = producerRecord,
+                    Studio = studioRecord,
+                    DVDCategory = dvdCategoryRecord!,
+                    DateReleased = dvdTitle.DateReleased,
+                    StandardCharge = dvdTitle.StandardCharge,
+                    PenaltyCharge = dvdTitle.PenaltyCharge,
+                })).Entity;
+                foreach (var actor in actors) {
+                    List<String> _ = actor.Split(' ').ToList();
+                    var firstName = _.First();
+                    _.RemoveAt(0);
+                    var lastName = String.Join(' ', _);
+                    var actorRecord = await _databasecontext.Actors.FirstOrDefaultAsync(a => a.ActorFirstName == firstName && a.ActorSurname == lastName);
+                    if (actorRecord == null) {
+                        actorRecord = (await _databasecontext.Actors.AddAsync(new Actor() { ActorFirstName = firstName, ActorSurname = lastName })).Entity;
+                    }
+                    await _databasecontext.CastMembers.AddAsync(new CastMember() { DVDTitle = dvdTitleRecord, Actor = actorRecord });
+                }
+                await _databasecontext.SaveChangesAsync();
             }
-            catch (DbUpdateException /* ex */)
+            catch (Exception ex )
             {
-                //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                ViewBag.error = ex.Message;
             }
-
-            ViewData["ProducerNumber"] = new SelectList(_databasecontext.Producers, "ProducerNumber", "ProducerName", dvdtitle.ProducerNumber);
-            ViewData["CategoryNumber"] = new SelectList(_databasecontext.DVDCategories, "CategoryNumber", "CategoryDescription", dvdtitle.CategoryNumber);
-            ViewData["StudioNumber"] = new SelectList(_databasecontext.Studios, "StudioNumber", "StudioName", dvdtitle.StudioNumber);
-
-            return View(dvdtitle);
+            return RedirectToAction(nameof(Index));
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("DVDNumber,DVDTitleName,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
+
+        //{
+        //    try
+        //    {
+        //            _databasecontext.Add(dvdtitle);
+        //            await _databasecontext.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Index));
+                
+        //    }
+        //    catch (DbUpdateException /* ex */)
+        //    {
+        //        //Log the error (uncomment ex variable name and write a log.
+        //        ModelState.AddModelError("", "Unable to save changes. " +
+        //            "Try again, and if the problem persists " +
+        //            "see your system administrator.");
+        //    }
+
+        //    return View(nameof(Index));
+        //}
 
         public async Task<IActionResult> EditPost(int id)
         {

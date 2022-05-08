@@ -21,7 +21,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
-        public async Task<IActionResult> Create()
+        public  IActionResult Create()
         {
             ViewData["DVDNumber"] = new SelectList(_databasecontext.DVDTitles, "DVDNumber", "DVDTitleName");
             ViewData["ActorNumber"] = new SelectList(_databasecontext.Actors, "ActorNumber", "ActorSurname");

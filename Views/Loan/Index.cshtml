@@ -1,65 +1,130 @@
 ﻿@model IEnumerable<dvd_store_adcw2g1.Models.Loan>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Loan";
 }
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <h1>Loan</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <form asp-controller="Member" asp-action="Index" class="d-flex flex-row-reverse">
+        <input type="search" name="SearchString" placeholder="Enter Surname" id="search-focus" id="form1" class="form-control"/>
+        <button type="submit" value="Search" class="btn btn-dark">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addmodel"><i class="fas fa-add"></i></button>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LoanType)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.LoanType)*@ Type
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DVDCopy)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDCopy)*@ DVD
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.Member)*@ Member
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOut)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DateOut)*@ Loaned Date
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateDue)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DateDue)*@ Due Date
             </th>
-            <th>
+@*          <th scope="col">
                 @Html.DisplayNameFor(model => model.DateReturned)
-            </th>
-            <th></th>
+            </th>*@
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanType.LoanTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DVDCopy.DatePurchased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateDue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateReturned)
-            </td>
-            <td>
-                <a asp-action="EditPost" asp-route-id="@item.LoanNumber">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LoanNumber">Details</a> |
-                <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoanType.LoanTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDCopy.DatePurchased)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateDue)
+                </td>
+@*                <td>
+                    @Html.DisplayFor(modelItem => item.DateReturned)
+                </td>*@
+                <td>
+                    <a asp-action="EditPost" asp-route-id="@item.LoanNumber"><i class="fas fa-pen-to-square"></i></a> |
+@*                    <a asp-action="Details" asp-route-id="@item.LoanNumber">Details</a> |*@
+@*                    <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber">Delete</a>*@
+                    <a asp-action="return" asp-route-id="@item.LoanNumber">returned</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<!--Add-->
+<div class="modal fade" id="addmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <form asp-action="Create">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Studio</h5>
+@*        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>*@
+      </div>
+      <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="LoanTypeNumber" class="control-label">Type</label>
+                <select name="LoanTypeNumber" class ="form-control" asp-items="ViewBag.LoanTypeNumber"></select>
+            </div>
+            <div class="form-group">
+                <label for="CopyNumber" class="control-label">DVD Copy</label>
+                <select name="CopyNumber" class ="form-control" asp-items="ViewBag.CopyNumber"></select>
+            </div>
+            <div class="form-group">
+                <label for="MemberNumber" class="control-label">Member</label>
+                <select name="MemberNumber" class ="form-control" asp-items="ViewBag.MemberNumber"></select>
+            </div>
+@*            <div class="form-group">
+                <label for="DateOut" class="control-label"></label>
+                <input name="DateOut" class="form-control" />
+                <span for="DateOut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="DateDue" class="control-label"></label>
+                <input name="DateDue" class="form-control" />
+                <span for="DateDue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="DateReturned" class="control-label"></label>
+                <input name="DateReturned" class="form-control" />
+                <span for="DateReturned" class="text-danger"></span>
+            </div>*@
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" value="Create" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Font Awesome icon-->
+<script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>
