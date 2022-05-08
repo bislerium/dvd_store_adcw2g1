@@ -138,17 +138,20 @@
                  </datalist>
                 <span for="Studio" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="Actors" class="col-form-label">Actors</label>
-                <div class="form-control">
-                    <select multiple id="input" name="Actors" type="text" data-role="tagsinput" class="form-control"/>
-                </div>
-                <span for="Actors" class="text-danger"></span>
-            </div>
             <div class="form-group" style="margin-top: 5%">
                 <label for="DateReleased" class="col-form-label">Release Date</label>
                 <input type="date" name="DateReleased" class="form-control" />
                 <span for="DateReleased" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Actors" class="col-form-label">Actors</label>
+                <div>
+                    <select multiple id="input" name="Actors" type="text" data-role="tagsinput" class="form-control"/>
+                </div>
+                <span for="Actors" class="text-danger"></span>
+            </div>
+            <div>
+                <input disabled style="display: none"/>
             </div>
             <div class="form-group">
                 <label for="StandardCharge" class="col-form-label">Standard Charge</label>
