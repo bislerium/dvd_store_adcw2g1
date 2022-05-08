@@ -90,16 +90,16 @@
       <div class="modal-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label for="LoanTypeNumber" class="control-label">Type</label>
-                <select name="LoanTypeNumber" class ="form-control" asp-items="ViewBag.LoanTypeNumber"></select>
+                <label for="loanTypeID" class="control-label">Type</label>
+                <select name="loanTypeID" class ="form-control" asp-items="ViewBag.LoanTypes"></select>
             </div>
             <div class="form-group">
-                <label for="CopyNumber" class="control-label">DVD Copy</label>
-                <select name="CopyNumber" class ="form-control" asp-items="ViewBag.CopyNumber"></select>
+                <label for="dvdCopyID" class="control-label">DVD Copy</label>
+                <select name="dvdCopyID" class ="form-control" asp-items="ViewBag.DVDCopies"></select>
             </div>
             <div class="form-group">
-                <label for="MemberNumber" class="control-label">Member</label>
-                <select name="MemberNumber" class ="form-control" asp-items="ViewBag.MemberNumber"></select>
+                <label for="memberID" class="control-label">Member</label>
+                <select name="memberID" class ="form-control" asp-items="ViewBag.Members"></select>
             </div>
 @*            <div class="form-group">
                 <label for="DateOut" class="control-label"></label>

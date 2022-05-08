@@ -37,7 +37,8 @@ namespace dvd_store_adcw2g1.Controllers
             try
             {
 
-
+                dvdcopy.DVDTitle = (await _databasecontext.DVDTitles.FindAsync(dvdcopy.DVDNumber))!;
+                Console.WriteLine(dvdcopy);
                 _databasecontext.Add(dvdcopy);
                 await _databasecontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -59,7 +60,6 @@ namespace dvd_store_adcw2g1.Controllers
         public async Task<IActionResult> EditPost(int id)
         {
             var dvdcopy = await _databasecontext.DVDCopies.SingleOrDefaultAsync(s => s.CopyNumber == id);
-           
             return View(dvdcopy);
         }
 

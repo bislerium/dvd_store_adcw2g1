@@ -21,6 +21,29 @@
 </head>
 <body>
     <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+              <ul class="navbar-nav me-auto" style="text-align:center">
+                <li class="nav-item">
+                  <a class="nav-link active" asp-controller="Home" asp-action="Dashboard">Home
+                    <span class="visually-hidden">(current)</span>
+                  </a>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">DVD</a>
+                  <div class="dropdown-menu bg-dark" style="text-align: center">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-light" asp-controller="Actor" asp-action="index">Actor</a>
+                  </div>
+                </li>
+              </ul>
+              <a class="btn btn-dark" style="margin-right:5%" asp-controller="Home" asp-action="Index">Log In</a>
+            </div>
+</nav>
     </header>
     <div>
         <main role="main" class="pb-3">

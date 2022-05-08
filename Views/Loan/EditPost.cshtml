@@ -3,10 +3,11 @@
 @{
     ViewData["Title"] = "EditPost";
 }
-
-<h1>EditPost</h1>
-
-<h4>Loan</h4>
+<div style="margin: 5%">
+<<div class="d-flex flex-wrap" style="margin-bottom: 2%; margin-right: 6%; margin-top: 5%">
+        <a asp-action="Index" style="margin-right: 5%"><i class="fas fa-chevron-left" style="font-size:36px"></i></a>
+        <h2>Edit Loan Details</h2>
+    </div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,40 +19,37 @@
                 <select asp-for="LoanTypeNumber" class="form-control" asp-items="ViewBag.LoanTypeNumber"></select>
                 <span asp-validation-for="LoanTypeNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <label asp-for="CopyNumber" class="control-label"></label>
                 <select asp-for="CopyNumber" class="form-control" asp-items="ViewBag.CopyNumber"></select>
                 <span asp-validation-for="CopyNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <label asp-for="MemberNumber" class="control-label"></label>
                 <select asp-for="MemberNumber" class="form-control" asp-items="ViewBag.MemberNumber"></select>
                 <span asp-validation-for="MemberNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <label asp-for="DateOut" class="control-label"></label>
                 <input asp-for="DateOut" class="form-control" />
                 <span asp-validation-for="DateOut" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <label asp-for="DateDue" class="control-label"></label>
                 <input asp-for="DateDue" class="form-control" />
                 <span asp-validation-for="DateDue" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <label asp-for="DateReturned" class="control-label"></label>
                 <input asp-for="DateReturned" class="form-control" />
                 <span asp-validation-for="DateReturned" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5%">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

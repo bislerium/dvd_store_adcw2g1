@@ -3,36 +3,35 @@
 @{
     ViewData["Title"] = "EditPost";
 }
-
-<h1>EditPost</h1>
-
-<h4>MembershipCategory</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditPost">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MembershipCategoryNumber" />
-            <div class="form-group">
-                <label asp-for="MembershipCategoryDescription" class="control-label"></label>
-                <input asp-for="MembershipCategoryDescription" class="form-control" />
-                <span asp-validation-for="MembershipCategoryDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MembershipCategoryTotalLoans" class="control-label"></label>
-                <input asp-for="MembershipCategoryTotalLoans" class="form-control" />
-                <span asp-validation-for="MembershipCategoryTotalLoans" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div style="margin: 5%">
+    <div class="d-flex flex-wrap" style="margin-bottom: 2%; margin-right: 6%; margin-top: 5%">
+        <a asp-action="Index" style="margin-right: 5%"><i class="fas fa-chevron-left" style="font-size:36px"></i></a>
+        <h2>Edit Membership Category Details</h2>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EditPost">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="MembershipCategoryNumber" />
+                <div class="form-group">
+                    <label asp-for="MembershipCategoryDescription" class="control-label" style="margin-top: 5%"></label>
+                    <input asp-for="MembershipCategoryDescription" class="form-control" />
+                    <span asp-validation-for="MembershipCategoryDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MembershipCategoryTotalLoans" class="control-label" style="margin-top: 5%"></label>
+                    <input asp-for="MembershipCategoryTotalLoans" class="form-control" />
+                    <span asp-validation-for="MembershipCategoryTotalLoans" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-top: 5%">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

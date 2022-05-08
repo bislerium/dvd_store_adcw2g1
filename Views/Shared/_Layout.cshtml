@@ -37,25 +37,35 @@
                     <span class="visually-hidden">(current)</span>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" asp-controller="Member" asp-action="index">Member</a>
+                <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Member</a>
+                  <div class="dropdown-menu bg-dark" style="text-align: center">
+                    <a class="dropdown-item text-light" asp-controller="Member" asp-action="index">Member</a>
+                    <a class="dropdown-item text-light" asp-controller="MembershipCategory" asp-action="index">Category</a>
+                  </div>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">DVD</a>
                   <div class="dropdown-menu bg-dark" style="text-align: center">
                     <a class="dropdown-item text-light" asp-controller="DVDTitle" asp-action="index">DVD</a>
                     <a class="dropdown-item text-light" asp-controller="DVDCategory" asp-action="index">Category</a>
-                    
+                    <a class="dropdown-item text-light" asp-controller="DVDCopy" asp-action="index">Copy</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-light" asp-controller="Actor" asp-action="index">Actor</a>
+                    <a class="dropdown-item text-light" asp-controller="Producer" asp-action="index">Producer</a>
                     <a class="dropdown-item text-light" asp-controller="Studio" asp-action="index">Studio</a>
                   </div>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" asp-controller="User" asp-action="index">User</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" asp-controller="Loan" asp-action="index">Loan</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Loan</a>
+                  <div class="dropdown-menu bg-dark" style="text-align: center">
+                    <a class="dropdown-item text-light" asp-controller="Loan" asp-action="index">Loan</a>
+                    <a class="dropdown-item text-light" asp-controller="LoanType" asp-action="index">Type</a>
+                  </div>
+                  
                 </li>
               </ul>
               <a class="btn btn-dark" style="margin-right:5%" asp-controller="Home" asp-action="logout">Log Out</a>
