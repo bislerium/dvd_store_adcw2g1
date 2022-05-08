@@ -66,7 +66,7 @@ namespace dvd_store_adcw2g1.Controllers
             if (memberRecord != null && dvdCopyRecord != null && loanTypeRecord != null)
             {
                 var memberAge = (memberRecord.MemberDOB - DateTime.Now).TotalDays / 365;
-                if (dvdCopyRecord.DVDTitle.DVDCategory.IsAgeRestricted && memberAge < 18)
+                if (bool.Parse(dvdCopyRecord.DVDTitle.DVDCategory.AgeRestricted) && memberAge < 18)
                 {
                     ViewData["message"] = "Does not meet Age Requirement!";
                     ViewData["error"] = true;
@@ -84,6 +84,7 @@ namespace dvd_store_adcw2g1.Controllers
                     if (memberLoans == null || memberLoans.TotalActiveLoans < memberRecord.MembershipCategory.MembershipCategoryTotalLoans)
                     {
                         var dateNow = DateTime.Now;
+                        var loanDuration = Int32.Parse(loanTypeRecord.LoanDuration);
                         if (confirm)
                         {
                             await _databasecontext.Loans.AddAsync(new Loan()
@@ -92,7 +93,7 @@ namespace dvd_store_adcw2g1.Controllers
                                 DVDCopy = dvdCopyRecord,
                                 Member = memberRecord,
                                 DateOut = dateNow,
-                                DateDue = dateNow.AddDays(loanTypeRecord.LoanDuration),
+                                DateDue = dateNow.AddDays(loanDuration),
                                 DateReturned = null,
                             });
                             await _databasecontext.SaveChangesAsync();
@@ -102,7 +103,7 @@ namespace dvd_store_adcw2g1.Controllers
                         else
                         {
                             var dvdTitle = dvdCopyRecord.DVDTitle;
-                            ViewData["message"] = $"The amount to pay for the {dvdTitle.DVDTitleName} copy is Rs.{dvdTitle.StandardCharge * loanTypeRecord.LoanDuration} as per the standard charge: Rs.{dvdTitle.StandardCharge}/day for {loanTypeRecord.LoanDuration} days dued at {dateNow.AddDays(loanTypeRecord.LoanDuration)}.";
+                            ViewData["message"] = $"The amount to pay for the {dvdTitle.DVDTitleName} copy is Rs.{dvdTitle.StandardCharge * loanDuration} as per the standard charge: Rs.{dvdTitle.StandardCharge}/day for {loanTypeRecord.LoanDuration} days dued at {dateNow.AddDays(loanDuration)}.";
                             ViewData["error"] = false;
                             ViewData["memberID"] = memberID;
                             ViewData["dvdCopyID"] = dvdCopyID;
