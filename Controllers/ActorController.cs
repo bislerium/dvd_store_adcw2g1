@@ -17,17 +17,21 @@ namespace dvd_store_adcw2g1.Controllers
         }
         public async Task<IActionResult> Index(string searchString)
         {
-            if (HttpContext.Session.GetString("role") == null)
-            { // for controller
-                return RedirectToAction(controllerName: "Home", actionName: "Index");
-            }
-            else
-            {
+            //if (HttpContext.Session.GetString("role") == null)
+            //{ // for controller
+            //    return RedirectToAction(controllerName: "Home", actionName: "Index");
+            //}
+            //else
+            //{
                 
                 var actor = from m in _databasecontext.Actors
                             select m;
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    actor = from m in _databasecontext.Actors.Where(a => a.ActorSurname.Contains(searchString)) select m;
+                }
                 return View(await actor.ToListAsync());
-            }
+            //}
 
         }
 
@@ -53,6 +57,15 @@ namespace dvd_store_adcw2g1.Controllers
                     "see your system administrator.");
             }
             return View(actor);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var actors = from s in _databasecontext.CastMembers.Include(p => p.DVDTitle).Include(p => p.Actor)
+                           select s;
+
+            actors = actors.Where(s => s.Actor.ActorNumber.Equals(id));
+            return View(await actors.ToListAsync());
         }
 
         public async Task<IActionResult> EditPost(int id)
