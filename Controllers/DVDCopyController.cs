@@ -21,7 +21,12 @@ namespace dvd_store_adcw2g1.Controllers
             ViewData["DVDNumber"] = new SelectList(_databasecontext.DVDTitles, "DVDNumber", "DVDTitleName");
             return View(await databasecontext.ToListAsync());
         }
-        
+
+        /// <summary>
+        /// [FUNCTION 5] Allow the user to enter or select a Copy by CopyNumber and find the details of the last loan for that copy(whether it is still on loan or has been returned), ie the Name of the Member who borrowed it, the date out, due and back(if any) and the title of the DVD.
+        /// </summary>
+        /// <param name="id">DVD Copy ID</param>
+        /// <returns>Renders Relevant Page</returns>
         public async Task<IActionResult> Details(int? id)
         {
             var databasecontext = from l in _databasecontext.Loans
@@ -35,20 +40,21 @@ namespace dvd_store_adcw2g1.Controllers
                                   group l by c.CopyNumber into lg
                                   select new RecentDVDCopyLoan()
                                   {
-                                       Loan = lg.OrderBy( l => l.DateOut).Last(),
-                                       Member = (from m in _databasecontext.Members
-                                       where m.MemberNumber == lg.OrderBy(l => l.DateOut).Last().MemberNumber
-                                       select m).First(),
-                                       DVDTitle = (from t in _databasecontext.DVDTitles
-                                                   join c in _databasecontext.DVDCopies
-                                                   on t.DVDNumber  equals c.DVDNumber
-                                                   where c.CopyNumber == lg.OrderBy(l => l.DateOut)!.Last().CopyNumber
-                                                   select t).First(),
+                                      Loan = lg.OrderBy(l => l.DateOut).Last(),
+                                      Member = (from m in _databasecontext.Members
+                                                where m.MemberNumber == lg.OrderBy(l => l.DateOut).Last().MemberNumber
+                                                select m).First(),
+                                      DVDTitle = (from t in _databasecontext.DVDTitles
+                                                  join c in _databasecontext.DVDCopies
+                                                  on t.DVDNumber equals c.DVDNumber
+                                                  where c.CopyNumber == lg.OrderBy(l => l.DateOut)!.Last().CopyNumber
+                                                  select t).First(),
                                   };
 
             return View(await databasecontext.FirstOrDefaultAsync());
         }
 
+        // Create a DVDCopy record
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CopyNumber,DVDNumber,DatePurchased")] DVDCopy dvdcopy)
@@ -69,7 +75,7 @@ namespace dvd_store_adcw2g1.Controllers
                     "see your system administrator.");
             }
 
-           
+
             ViewData["DVDNumber"] = new SelectList(_databasecontext.DVDTitles, "DVDNumber", "DVDTitleName", dvdcopy.DVDNumber);
             return View(dvdcopy);
         }
@@ -87,21 +93,23 @@ namespace dvd_store_adcw2g1.Controllers
                         on l.CopyNumber equals d.CopyNumber
                         where d.DatePurchased.AddDays(365) < DateTime.Now
                         group l by l.CopyNumber into lg
-                        select new OldDVDCopy {
+                        select new OldDVDCopy
+                        {
                             DVDCopy = (from d in _databasecontext.DVDCopies
                                        where d.CopyNumber == lg.Key
-                                  select d).First(),
+                                       select d).First(),
                             DVDTitle = (from dt in _databasecontext.DVDTitles
                                         join d in dvdCopies
-                                        on dt.DVDNumber equals d.DVDNumber                                        
-                                       where d.CopyNumber == lg.Key
-                                       select dt).First(),
-                            IsLoaned = lg.Any(l => l.DateReturned == null),                        
-                        };            
+                                        on dt.DVDNumber equals d.DVDNumber
+                                        where d.CopyNumber == lg.Key
+                                        select dt).First(),
+                            IsLoaned = lg.Any(l => l.DateReturned == null),
+                        };
 
             return View(await query.Where(o => !o.IsLoaned).ToListAsync());
         }
 
+        // Filled data form for Editing Post
         public async Task<IActionResult> EditPost(int id)
         {
             var dvdcopy = await _databasecontext.DVDCopies.SingleOrDefaultAsync(s => s.CopyNumber == id);
@@ -109,7 +117,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdcopy);
         }
 
-
+        // Edit DVDCopy record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, [Bind("CopyNumber,DVDNumber,DatePurchased")] DVDCopy dvdcopy)
@@ -118,12 +126,6 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 return NotFound();
             }
-            //var dvdtitleToUpdate = await _databasecontext.DVDTitles.FirstOrDefaultAsync(s => s.DVDNumber == id);
-            //if (await TryUpdateModelAsync<DVDTitle>(
-            //    dvdtitleToUpdate,
-            //    "",
-            //    s => s.ProducerNumber, s => s.CategoryNumber, s => s.StudioNumber, s => s.DateReleased, s => s.StandardCharge, s => s.PenaltyCharge))
-
             try
             {
                 _databasecontext.Update(dvdcopy);
@@ -143,12 +145,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdcopy);
         }
 
+        // Confirm the deletion of DVDCopy record
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dvdcopyToUpdate = await _databasecontext.DVDCopies.Include(p => p.DVDTitle).SingleOrDefaultAsync(s => s.CopyNumber == id);
             return View(dvdcopyToUpdate);
         }
 
+        // Delete the DVDCopy record
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

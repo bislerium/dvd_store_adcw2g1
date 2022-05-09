@@ -11,6 +11,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         private readonly DatabaseContext databaseContext;
 
+        // Logging out from the application
         public ActionResult Logout()
         {
             HttpContext.Session.Remove("userid");
@@ -53,6 +54,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // For logging into the application
         public IActionResult Login(string username, string userpassword)
         {
 
@@ -75,6 +77,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create a User Record in the database
         public IActionResult Create(User user)
         {
 

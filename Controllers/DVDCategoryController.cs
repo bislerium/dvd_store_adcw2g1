@@ -25,6 +25,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create DVDCategory record in the database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DVDCategory dvdcategory)
@@ -55,7 +56,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdcategoryToUpdate);
         }
 
-
+        // Edit/Update the DVDCategory record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -86,12 +87,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdcategoryToUpdate);
         }
 
+        // Confirm before the deletion of DVDCategory record
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dvdcategoryToUpdate = await _databasecontext.DVDCategories.SingleOrDefaultAsync(s => s.CategoryNumber == id);
             return View(dvdcategoryToUpdate);
         }
 
+        // Confirm the DVDCategory record
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

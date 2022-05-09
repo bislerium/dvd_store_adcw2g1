@@ -1,6 +1,5 @@
 ﻿using dvd_store_adcw2g1.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace dvd_store_adcw2g1.Controllers
 {
@@ -20,18 +19,15 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
-
         public IActionResult Index()
         {
             return View();
         }
 
 
-       public IActionResult Login(string username,  string userpassword)
+        //For Logging into the Application
+        public IActionResult Login(string username, string userpassword)
         {
-
-
-
 
 
             var blog = databaseContext.Users
@@ -40,9 +36,9 @@ namespace dvd_store_adcw2g1.Controllers
 
             var data = blog;
 
-            
 
-           if(data.UserName == username && data.UserPassword == userpassword)
+
+            if (data.UserName == username && data.UserPassword == userpassword)
             {
                 return View("Success");
             }

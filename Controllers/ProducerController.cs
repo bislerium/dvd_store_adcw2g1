@@ -25,6 +25,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create a producer record in database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Producer producer)
@@ -49,6 +50,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(producer);
         }
 
+        // Filled-in form data for modalshhet to Edit Producer
         public async Task<IActionResult> EditPost(int id)
         {
             var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ProducerNumber == id);
@@ -56,6 +58,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
+        // Update the Producer record in the database
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -86,12 +89,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(producerToUpdate);
         }
 
+        // Confirmation for Producer record deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var producerToUpdate = await _databasecontext.Producers.SingleOrDefaultAsync(s => s.ProducerNumber == id);
             return View(producerToUpdate);
         }
 
+        // Delete the producer record from the database
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

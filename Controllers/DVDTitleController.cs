@@ -23,13 +23,19 @@ namespace dvd_store_adcw2g1.Controllers
         {
             var databasecontext = _databasecontext.DVDTitles.Include(p => p.Producer).Include(p => p.DVDCategory).Include(p => p.Studio);
             ViewData["ProducerNumber"] = await (from p in _databasecontext.Producers
-                                          select p.ProducerName).ToListAsync();
+                                                select p.ProducerName).ToListAsync();
             ViewData["CategoryNumber"] = new SelectList(_databasecontext.DVDCategories, "CategoryNumber", "CategoryDescription");
             ViewData["StudioNumber"] = await (from s in _databasecontext.Studios
                                               select s.StudioName).ToListAsync();
             return View(await databasecontext.ToListAsync());
         }
 
+        /// <summary>
+        /// [Function 4] List the producer, studio and cast lists of all DVDs in the shop with the DVDs in
+        /// increasing order of DateReleased, showing the title of each DVD and the
+        /// names of all the cast members in alphabetic order of last name.
+        /// </summary>
+        /// <returns>Renders relevant Page</returns>
         public async Task<IActionResult> DVDDetails()
         {
             var query = from s in _databasecontext.CastMembers
@@ -41,7 +47,7 @@ namespace dvd_store_adcw2g1.Controllers
                         on d.ProducerNumber equals p.ProducerNumber
                         join st in _databasecontext.Studios
                         on d.StudioNumber equals st.StudioNumber
-                        group a by d.DVDNumber into dg  
+                        group a by d.DVDNumber into dg
                         orderby (from dt in _databasecontext.DVDTitles
                                  where dt.DVDNumber == dg.Key
                                  select dt).FirstOrDefault()!.DateReleased
@@ -61,7 +67,7 @@ namespace dvd_store_adcw2g1.Controllers
                                       where dt.DVDNumber == dg.Key
                                       select s.StudioName).FirstOrDefault()!,
                             Actors = dg.OrderBy(a => a.ActorSurname).ToList(),
-                        }                        ;
+                        };
 
             return View(await query.ToListAsync());
         }
@@ -96,13 +102,15 @@ namespace dvd_store_adcw2g1.Controllers
                     StandardCharge = dvdTitle.StandardCharge,
                     PenaltyCharge = dvdTitle.PenaltyCharge,
                 })).Entity;
-                foreach (var actor in actors) {
+                foreach (var actor in actors)
+                {
                     List<String> _ = actor.Split(' ').ToList();
                     var firstName = _.First();
                     _.RemoveAt(0);
                     var lastName = String.Join(' ', _);
                     var actorRecord = await _databasecontext.Actors.FirstOrDefaultAsync(a => a.ActorFirstName == firstName && a.ActorSurname == lastName);
-                    if (actorRecord == null) {
+                    if (actorRecord == null)
+                    {
                         actorRecord = (await _databasecontext.Actors.AddAsync(new Actor() { ActorFirstName = firstName, ActorSurname = lastName })).Entity;
                     }
                     await _databasecontext.CastMembers.AddAsync(new CastMember() { DVDTitle = dvdTitleRecord, Actor = actorRecord });
@@ -110,13 +118,14 @@ namespace dvd_store_adcw2g1.Controllers
                 await _databasecontext.SaveChangesAsync();
                 Console.WriteLine(_databasecontext.DVDTitles.FindAsync(dvdTitleRecord.DVDNumber));
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 ViewBag.error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
         }
 
+        // Form data for initiating Update/Edit of the DVDTitle record
         public async Task<IActionResult> EditPost(int id)
         {
             var dvdtitleToUpdate = await _databasecontext.DVDTitles.SingleOrDefaultAsync(s => s.DVDNumber == id);
@@ -126,7 +135,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdtitleToUpdate);
         }
 
-
+        // Edit/Update the DVDTitle record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, [Bind("DVDNumber,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
@@ -135,24 +144,24 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 return NotFound();
             }
-                try
-                {
-                    _databasecontext.Update(dvdtitle);
-                    await _databasecontext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateException /* ex */)
-                {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
-                }
-            
+            try
+            {
+                _databasecontext.Update(dvdtitle);
+                await _databasecontext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+            }
+
             ViewData["ProducerNumber"] = new SelectList(_databasecontext.Producers, "ProducerNumber", "ProducerName", dvdtitle.ProducerNumber);
             ViewData["CategoryNumber"] = new SelectList(_databasecontext.DVDCategories, "CategoryNumber", "CategoryDescription", dvdtitle.CategoryNumber);
             ViewData["StudioNumber"] = new SelectList(_databasecontext.Studios, "StudioNumber", "StudioName", dvdtitle.StudioNumber);
-            
+
             return View(dvdtitle);
         }
 
@@ -168,17 +177,19 @@ namespace dvd_store_adcw2g1.Controllers
                         join l in loans
                         on c.CopyNumber equals l.CopyNumber
                         group l by c.DVDNumber into lg
-                        where DateTime.Now > lg.Max(a => a.DateOut).AddDays(31)                        select lg.First().DVDCopy.DVDTitle;
+                        where DateTime.Now > lg.Max(a => a.DateOut).AddDays(31)
+                        select lg.First().DVDCopy.DVDTitle;
             return View(await query.ToListAsync());
         }
 
-
+        // Confirmation before the DVDTitle deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dvdtitleToUpdate = await _databasecontext.DVDTitles.Include(p => p.Producer).Include(p => p.DVDCategory).Include(p => p.Studio).SingleOrDefaultAsync(s => s.DVDNumber == id);
             return View(dvdtitleToUpdate);
         }
 
+        // Delete the DVDTitle record from the database
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

@@ -18,6 +18,11 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await _databasecontext.Users.ToListAsync());
         }
 
+        /// <summary>
+        /// Create a new User of Either of Manager or Assistant type
+        /// </summary>
+        /// <param name="user">User Model form for new User Creation in database</param>
+        /// <returns>renders relevant page</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)

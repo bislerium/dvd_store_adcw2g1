@@ -25,6 +25,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create MembershipCategory record in the database using the ModelForm
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MembershipCategory membershipcategory)
@@ -56,6 +57,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
+        // Edit/Update the the MembershipCategory record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -86,12 +88,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(membershipcategoryToUpdate);
         }
 
+        // Confirmation of MembershipCategory Deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var membershipcategoryToUpdate = await _databasecontext.MembershipCategories.SingleOrDefaultAsync(s => s.MembershipCategoryNumber == id);
             return View(membershipcategoryToUpdate);
         }
 
+        // Delete the MembershipCategory record from the database
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
@@ -114,8 +118,6 @@ namespace dvd_store_adcw2g1.Controllers
                 return RedirectToAction(nameof(DeleteConfirmed), new { id = id, saveChangesError = true });
             }
         }
-
-
 
     }
 }

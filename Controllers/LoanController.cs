@@ -15,6 +15,8 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
+
+        //Data for Loan creation Modal sheet
         public async Task<IActionResult> Index()
         {
             var databasecontext = _databasecontext.Loans.Include(p => p.LoanType).Include(p => p.DVDCopy).Include(p => p.Member).Include(p => p.DVDCopy.DVDTitle);           
@@ -40,7 +42,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
         /// <summary>
-        /// Displays a list of all DVD copies on loan currently, along with total loans, ordered by the date out and title.
+        /// [FUNCTION 11] Displays a list of all DVD copies on loan currently, along with total loans, ordered by the date out and title.
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
         public async Task<IActionResult> CurrentLoan()
@@ -232,12 +234,14 @@ namespace dvd_store_adcw2g1.Controllers
             return await query.FirstOrDefaultAsync();
         }
 
+        // Confirmation before Loan record deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var loanToUpdate = await _databasecontext.Loans.Include(p => p.LoanType).Include(p => p.DVDCopy).Include(p => p.Member).SingleOrDefaultAsync(s => s.LoanNumber == id);
             return View(loanToUpdate);
         }
 
+        // Delete the loan record from the database
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

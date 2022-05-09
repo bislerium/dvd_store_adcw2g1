@@ -21,7 +21,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
-        public  IActionResult Create()
+        public IActionResult Create()
         {
             ViewData["DVDNumber"] = new SelectList(_databasecontext.DVDTitles, "DVDNumber", "DVDTitleName");
             ViewData["ActorNumber"] = new SelectList(_databasecontext.Actors, "ActorNumber", "ActorSurname");
@@ -29,6 +29,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create DVDCategory record in the database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CastMemberNumber,DVDNumber,ActorNumber")] CastMember castmember)
@@ -36,8 +37,6 @@ namespace dvd_store_adcw2g1.Controllers
         {
             try
             {
-
-
                 _databasecontext.Add(castmember);
                 await _databasecontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -65,7 +64,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(castmember);
         }
 
-
+        // Edit DVDCategory record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, [Bind("CastMemberNumber,DVDNumber,ActorNumber")] CastMember castmember)
@@ -74,12 +73,6 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 return NotFound();
             }
-            //var dvdtitleToUpdate = await _databasecontext.DVDTitles.FirstOrDefaultAsync(s => s.DVDNumber == id);
-            //if (await TryUpdateModelAsync<DVDTitle>(
-            //    dvdtitleToUpdate,
-            //    "",
-            //    s => s.ProducerNumber, s => s.CategoryNumber, s => s.StudioNumber, s => s.DateReleased, s => s.StandardCharge, s => s.PenaltyCharge))
-
             try
             {
                 _databasecontext.Update(castmember);
@@ -100,12 +93,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(castmember);
         }
 
+        // Confirmation before the deletion of DVDCategory
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var castmemberToUpdate = await _databasecontext.CastMembers.Include(p => p.DVDTitle).Include(p => p.Actor).SingleOrDefaultAsync(s => s.CastMemberNumber == id);
             return View(castmemberToUpdate);
         }
 
+        // Confirm the deletion of CastMember
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

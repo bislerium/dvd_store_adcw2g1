@@ -15,6 +15,8 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
+
+        // GET all Members or Member(s) by the lastname
         public async Task<IActionResult> Index(string? searchString)
         {
             ViewData["MembershipCategoryNumber"] = new SelectList(_databasecontext.MembershipCategories, "MembershipCategoryNumber", "MembershipCategoryDescription");
@@ -27,6 +29,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await members.ToListAsync());
         }
 
+        // GET detail of a member by a ID
         public async Task<IActionResult> Details(int? id)
         {
             var databasecontext = from s in _databasecontext.Loans.Include(p => p.DVDCopy).Include(p => p.Member).Include(p => p.DVDCopy.DVDTitle) select s;
@@ -45,7 +48,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
         /// <summary>
-        /// Displays an alphabetic list of all members (including members with no current loans) with all their details(with membership category decoded) and the total number of DVDs they currently have on loan.This report should highlight with the message “Too many DVDs” any member who has more DVDs on loan than they are allowed from their MembershipCategor
+        /// [FUNCTION 8] Displays an alphabetic list of all members (including members with no current loans) with all their details(with membership category decoded) and the total number of DVDs they currently have on loan.This report should highlight with the message “Too many DVDs” any member who has more DVDs on loan than they are allowed from their MembershipCategor
         /// </summary>
         /// <returns>Renders Relevant View-Page</returns>
         public async Task<IActionResult> MemberLoanDetails()
@@ -59,12 +62,13 @@ namespace dvd_store_adcw2g1.Controllers
                         select new MembersActiveLoans
                         {
                             Member = (from m in _databasecontext.Members
-                                        where m.MemberNumber == lg.Key select m).First(),
+                                      where m.MemberNumber == lg.Key
+                                      select m).First(),
                             MemberCategory = (from mc in _databasecontext.MembershipCategories
-                                              join  ms in _databasecontext.Members
+                                              join ms in _databasecontext.Members
                                               on mc.MembershipCategoryNumber equals ms.MembershipCategoryNumber
-                                             where ms.MemberNumber == lg.Key
-                                             select mc).First(),
+                                              where ms.MemberNumber == lg.Key
+                                              select mc).First(),
                             TotalActiveLoans = lg.Where(l => l.DateReturned == null).Count(),
                         };
 
@@ -79,25 +83,27 @@ namespace dvd_store_adcw2g1.Controllers
         {
             var loans = _databasecontext.Loans;
             var query = from l in loans
-                        group l by l.MemberNumber into lg                         
+                        group l by l.MemberNumber into lg
                         select new InActiveLoanMember()
                         {
                             Member = (from m in _databasecontext.Members
-                                               where m.MemberNumber == lg.Key select m).First(),
+                                      where m.MemberNumber == lg.Key
+                                      select m).First(),
                             LastDateOut = lg.Max(a => a.DateOut),
                             LastLoanedDVDTitleName = (from t in _databasecontext.DVDTitles
-                                                      join c in _databasecontext.DVDCopies                                                     
+                                                      join c in _databasecontext.DVDCopies
                                                       on t.DVDNumber equals c.DVDNumber
                                                       join l in _databasecontext.Loans
                                                       on c.CopyNumber equals l.CopyNumber
-                                                      where l.MemberNumber == lg.Key &&  l.DateOut == lg.Max(a => a.DateOut)
+                                                      where l.MemberNumber == lg.Key && l.DateOut == lg.Max(a => a.DateOut)
                                                       select t.DVDTitleName).First(),
-                            DaysSinceLastLoaned = Math.Round((DateTime.Now - lg.Max(l => l.DateOut)).TotalDays,2),
+                            DaysSinceLastLoaned = Math.Round((DateTime.Now - lg.Max(l => l.DateOut)).TotalDays, 2),
                         };
 
             return View(await query.Where(a => (DateTime.Now > a.LastDateOut.AddDays(31))).ToListAsync());
         }
 
+        // Create a Member recoord in the database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MemberNumber,MembershipCategoryNumber,MembershipLastName,MembershipFirstName,MembershipAddress,MemberDOB")] Member member)
@@ -125,6 +131,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(member);
         }
 
+        // Filled form-data in Modalsheet for Members record
         public async Task<IActionResult> EditPost(int id)
         {
             var member = await _databasecontext.Members.SingleOrDefaultAsync(s => s.MemberNumber == id);
@@ -132,7 +139,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(member);
         }
 
-
+        // Edit/Update a Member record from the database
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, [Bind("MemberNumber,MembershipCategoryNumber,MembershipLastName,MembershipFirstName,MembershipAddress,MemberDOB")] Member member)
@@ -165,13 +172,14 @@ namespace dvd_store_adcw2g1.Controllers
 
             return View(member);
         }
-
+        // Confirmaton in a Member Deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var memberToUpdate = await _databasecontext.Members.Include(p => p.MembershipCategory).SingleOrDefaultAsync(s => s.MemberNumber == id);
             return View(memberToUpdate);
         }
 
+        // Delete Member record from the database 
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
@@ -194,8 +202,5 @@ namespace dvd_store_adcw2g1.Controllers
                 return RedirectToAction(nameof(DeleteConfirmed), new { id = id, saveChangesError = true });
             }
         }
-
-
-
     }
 }

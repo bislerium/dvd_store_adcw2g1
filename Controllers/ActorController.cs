@@ -1,9 +1,8 @@
 ﻿using dvd_store_adcw2g1.Models;
+using dvd_store_adcw2g1.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using dvd_store_adcw2g1.Models.ViewModels;
 using System.Data;
-using System.Web;
 
 namespace dvd_store_adcw2g1.Controllers
 {
@@ -16,30 +15,24 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
+
         public async Task<IActionResult> Index(string searchString)
         {
-            //if (HttpContext.Session.GetString("role") == null)
-            //{ // for controller
-            //    return RedirectToAction(controllerName: "Home", actionName: "Index");
-            //}
-            //else
-            //{
-                
-                var actor = from m in _databasecontext.Actors
-                            select m;
-                if (!String.IsNullOrEmpty(searchString))
-                {
-                    actor = from m in _databasecontext.Actors.Where(a => a.ActorSurname.Contains(searchString)) select m;
-                }
-                return View(await actor.ToListAsync());
-            //}
 
+            var actor = from m in _databasecontext.Actors
+                        select m;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                actor = from m in _databasecontext.Actors.Where(a => a.ActorSurname.Contains(searchString)) select m;
+            }
+            return View(await actor.ToListAsync());
         }
 
+        // Create the Actor record
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Actor actor)
-  
+
         {
             try
             {
@@ -60,6 +53,11 @@ namespace dvd_store_adcw2g1.Controllers
             return View(actor);
         }
 
+        /// <summary>
+        /// [FUNCTION 1] Allow the user to enter or select an actor’s name (Lastname) and see the titles of all DVDs stocked by the shop(whether on loan or on the shelves) for which the Actor is a CastMember.
+        /// </summary>
+        /// <param name="id">Actor ID</param>
+        /// <returns>Renders releant Page</returns>
         public async Task<IActionResult> Details(int id)
         {
 
@@ -80,6 +78,11 @@ namespace dvd_store_adcw2g1.Controllers
             return View(actorToUpdate);
         }
 
+        /// <summary>
+        /// [FUNCTION 2] Allow the user to enter or select an actor’s name (Lastname) and see the titles and the number of copies on the shelves of all DVDs for which the Actor is a CastMember and which have at least one copy on the shelves.
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DVDOnShelves(string searchString)
         {
             var DVDnotLoaned = from dt in _databasecontext.DVDTitles
@@ -103,6 +106,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
 
+        // Edit/Update of Actor record
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -133,12 +137,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(studentToUpdate);
         }
 
+        // Confirmation before the deletion of Actor record
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var actorToUpdate = await _databasecontext.Actors.SingleOrDefaultAsync(s => s.ActorNumber == id);
             return View(actorToUpdate);
         }
 
+        // Delete the Actor record
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

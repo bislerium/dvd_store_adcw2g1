@@ -18,6 +18,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await _databasecontext.Studios.ToListAsync());
         }
 
+        //Create a new Studio record in database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Studio studio)
@@ -42,6 +43,7 @@ namespace dvd_store_adcw2g1.Controllers
             return View(studio);
         }
 
+        // Filled-in Form data for Update Modalsheet 
         public async Task<IActionResult> EditPost(int id)
         {
             var actorToUpdate = await _databasecontext.Studios.SingleOrDefaultAsync(s => s.StudioNumber == id);
@@ -79,12 +81,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(studioToUpdate);
         }
 
+        // Confirmation for Studio Deletion
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var studioToUpdate = await _databasecontext.Studios.SingleOrDefaultAsync(s => s.StudioNumber == id);
             return View(studioToUpdate);
         }
 
+        // Delete Studio Instance/Record from the Database
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)

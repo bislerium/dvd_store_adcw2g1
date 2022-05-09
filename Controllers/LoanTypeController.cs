@@ -25,6 +25,7 @@ namespace dvd_store_adcw2g1.Controllers
 
         }
 
+        // Create a LoanType record in the database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LoanType loantype)
@@ -49,13 +50,15 @@ namespace dvd_store_adcw2g1.Controllers
             return View(loantype);
         }
 
+
+        // Filled form-data for the Modalsheet to update LoanType record
         public async Task<IActionResult> EditPost(int id)
         {
             var loantypeToUpdate = await _databasecontext.LoanTypes.SingleOrDefaultAsync(s => s.LoanTypeNumber == id);
             return View(loantypeToUpdate);
         }
 
-
+        // Edit/Update the LoanType record in the database
         [HttpPost, ActionName("EditPost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -86,12 +89,14 @@ namespace dvd_store_adcw2g1.Controllers
             return View(loantypeToUpdate);
         }
 
+        //Confirmation before deletion of a LoanType record
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var loantypeToUpdate = await _databasecontext.LoanTypes.SingleOrDefaultAsync(s => s.LoanTypeNumber == id);
             return View(loantypeToUpdate);
         }
 
+        // Delete the LoanType record
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
