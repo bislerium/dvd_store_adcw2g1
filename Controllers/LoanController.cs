@@ -39,7 +39,7 @@ namespace dvd_store_adcw2g1.Controllers
         }
 
         /// <summary>
-        /// Allow to issue a DVD Copy on loan to a member.
+        /// [FUNCTION 6] Allow to issue a DVD Copy on loan to a member.
         /// If confirm, Loan is saved
         /// Else, confirmation is asked with a message with loan charges.
         /// </summary>
@@ -124,6 +124,73 @@ namespace dvd_store_adcw2g1.Controllers
                 }
             }
             return View();
+        }
+
+        /// <summary>
+        /// [FUNCTION 7] Confirm to record the return of a DVD copy. If due date is over the return date, the penalty charge is shown.
+        /// </summary>
+        /// <param name="dvdCopyID">ID of a DVDCopy record in Database</param>
+        /// <returns>Returns the Loan Record or null</returns>
+        public async Task<IActionResult> ConfirmReturn(int? dvdCopyID)
+        {
+            var loan = await ValidateAndGetLoan(dvdCopyID);
+            if (loan == null)
+            {
+
+                ViewData["message"] = "Either DVD Copy is unavailable or is already returned!";
+                ViewData["error"] = true;
+            }
+            else
+            {
+                var currentDate = DateTime.Now;
+                var dueDate = loan.DateDue;
+                ViewData["message"] = "Are you sure the Loaned DVD-Copy is returned?";
+                if (currentDate > dueDate)
+                {
+                    var days = (currentDate - dueDate).TotalDays;
+                    var penaltyChargeRate = (await _databasecontext.DVDTitles.FindAsync((await _databasecontext.DVDCopies.FindAsync(loan.CopyNumber))!.DVDNumber))!.PenaltyCharge;
+                    var penaltyAmount = Math.Round(days * penaltyChargeRate, 0);
+                    ViewData["message"] = $"The Member is penalized with amount: Ns.{penaltyAmount} at the rate of Ns.{penaltyChargeRate}/day for exceeding due date by {Math.Round(days,2)} days.";
+                }
+                ViewData["error"] = false;
+                ViewData["dvdCopyID"] = dvdCopyID;
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// [FUNCTION 7] Records the return of a DVD copy
+        /// </summary>
+        /// <param name="dvdCopyID">ID of a DVDCopy record in Database</param>
+        /// <returns>Returns the Loan Record or null</returns>
+        public async Task<IActionResult> Return(int? dvdCopyID)
+        {
+            var loan = await ValidateAndGetLoan(dvdCopyID);
+            if (loan == null)
+            {
+                return NotFound();
+            }
+            loan.DateReturned = DateTime.Now;
+            _databasecontext.Loans.Update(loan);
+            await _databasecontext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        /// <summary>
+        /// [FUNCTION 7] Validates DVDCopy ID and retrieves the Loan corresponding to the DVD copy that is not yet returned.
+        /// </summary>
+        /// <param name="dvdCopyID">ID of a DVDCopy record in Database</param>
+        /// <returns>Returns the Loan Record or null</returns>
+        public async Task<Loan?> ValidateAndGetLoan(int? dvdCopyID)
+        {
+            if (dvdCopyID == null)
+            {
+                return null;
+            }
+            var query = from l in _databasecontext.Loans
+                        where l.CopyNumber == dvdCopyID && l.DateReturned == null
+                        select l;
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<IActionResult> DeleteConfirmed(int id)

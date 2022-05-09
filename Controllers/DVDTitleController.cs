@@ -28,7 +28,14 @@ namespace dvd_store_adcw2g1.Controllers
                                               select s.StudioName).ToListAsync();
             return View(await databasecontext.ToListAsync());
         }
+
         private String ToTitleCase(String @string) => _textInfo.ToTitleCase(@string.Trim());
+
+        /// <summary>
+        /// [FUNCTION 9] Create a new DVD title with auto-assignment/creation of producer, studio, category and actors as per data in ModelForm.
+        /// </summary>
+        /// <param name="dvdTitle">NewDVDTitle ModelForm with required form-data for DVDTitle record addition in Database</param>
+        /// <returns>Renders Relevant View-Page</returns>
         [HttpPost]
         public async Task<IActionResult> Create([Bind("DVDTitleName,Producer,DVDCategory,Studio,Actors,DateReleased,StandardCharge,PenaltyCharge")] NewDVDTiTle dvdTitle)
         {
@@ -73,29 +80,6 @@ namespace dvd_store_adcw2g1.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("DVDNumber,DVDTitleName,ProducerNumber,CategoryNumber,StudioNumber,DateReleased,StandardCharge,PenaltyCharge")] DVDTitle dvdtitle)
-
-        //{
-        //    try
-        //    {
-        //            _databasecontext.Add(dvdtitle);
-        //            await _databasecontext.SaveChangesAsync();
-        //            return RedirectToAction(nameof(Index));
-                
-        //    }
-        //    catch (DbUpdateException /* ex */)
-        //    {
-        //        //Log the error (uncomment ex variable name and write a log.
-        //        ModelState.AddModelError("", "Unable to save changes. " +
-        //            "Try again, and if the problem persists " +
-        //            "see your system administrator.");
-        //    }
-
-        //    return View(nameof(Index));
-        //}
 
         public async Task<IActionResult> EditPost(int id)
         {
