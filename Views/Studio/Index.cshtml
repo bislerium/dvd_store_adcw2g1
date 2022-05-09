@@ -1,0 +1,71 @@
+﻿@model IEnumerable<dvd_store_adcw2g1.Models.Studio>
+
+@{
+    ViewData["Title"] = "Studio";
+}
+
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+
+    <h1>Studios</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addmodel"><i class="fas fa-add"></i></button>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.StudioName)*@ Name
+            </th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.StudioNumber">@Html.DisplayFor(modelItem => item.StudioName)</a>
+                </td>
+                <td>
+                    <a asp-action="EditPost" asp-route-id="@item.StudioNumber"><i class="fas fa-pen-to-square"></i></a> |
+                    <a asp-action="DeleteConfirmed" asp-route-id="@item.StudioNumber"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<!--Add-->
+<div class="modal fade" id="addmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <form asp-action="Create">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Studio</h5>
+@*        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>*@
+      </div>
+      <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="StudioName" class="col-form-label">Name</label>
+                <input name="StudioName" class="form-control" required/>
+                <span for="StudioName" class="text-danger"></span>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" value="Create" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Font Awesome icon-->
+<script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>

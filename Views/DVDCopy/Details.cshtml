@@ -1,0 +1,53 @@
+﻿@model dvd_store_adcw2g1.Models.ViewModels.RecentDVDCopyLoan
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="container">
+<div class="d-flex flex-wrap" style="margin-bottom: 2%; margin-right: 6%; margin-top: 5%">
+        <a asp-action="Index" style="margin-right: 5%"><i class="fas fa-chevron-left" style="font-size:36px"></i></a>
+        <h2>Latest DVD Loan Copy Details</h2>
+ </div>
+
+<div>
+    <h4>DVDCopy</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            DVD Title
+        </dt>
+        <dt class = "col-sm-10">
+            @Html.DisplayFor(model => model.DVDTitle.DVDTitleName)
+        </dt>
+        <dt class = "col-sm-2">
+            DVD Number
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DVDTitle.DVDNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            Member
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Member.MembershipFirstName) @Html.DisplayFor(model => model.Member.MembershipLastName)
+        </dd>
+        <dt class = "col-sm-2">
+            Loaned Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Loan.DateOut)
+        </dd>
+        <dt class = "col-sm-2">
+             Due Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Loan.DateDue)
+        </dd>
+        <dt class = "col-sm-2">
+             Returned Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Loan.DateReturned)
+        </dd>
+    </dl>
+</div>
+</div>

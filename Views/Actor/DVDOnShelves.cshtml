@@ -1,0 +1,64 @@
+﻿
+@using dvd_store_adcw2g1.Models.ViewModels;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<dvd_store_adcw2g1.Models.ViewModels.DVDOnShelves>
+
+@{
+    ViewData["Title"] = "DVD On Shelves";
+}
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+
+    <h1>Actor DVD On Shelves</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <form asp-controller="Actor" asp-action="DVDOnShelves" class="d-flex flex-row-reverse">
+        <input type="search" name="SearchString" placeholder="Enter Surname" id="search-focus" id="form1" class="form-control"/>
+        <button type="submit" value="Search" class="btn btn-dark">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                Actor Surname
+            </th>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDCopy)*@ DVD Title
+            </th>
+            <th scope="col">
+                DVD Number
+            </th>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DateOut)*@ Total DVD Copies
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActorSurname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDCount)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+ <!--Font Awesome icon-->
+ <script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>

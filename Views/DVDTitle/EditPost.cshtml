@@ -1,0 +1,63 @@
+﻿@model dvd_store_adcw2g1.Models.DVDTitle
+
+@{
+    ViewData["Title"] = "EditPost";
+}
+
+<div class="container">
+    <div class="d-flex flex-wrap" style="margin-bottom: 2%; margin-right: 6%; margin-top: 5%">
+        <a asp-action="Index" style="margin-right: 5%"><i class="fas fa-chevron-left" style="font-size:36px"></i></a>
+        <h2>Edit DVD Details</h2>
+    </div>
+    <hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DVDNumber" />
+            <div class="form-group">
+                <label asp-for="DVDTitleName" class="control-label"></label>
+                <input asp-for="DVDTitleName" class="form-control" />
+                <span asp-validation-for="DVDTitleName" class="text-danger"></span>
+            </div>
+             <div class="form-group" style="margin-top: 5%">
+                <label asp-for="ProducerNumber" class="control-label"></label>
+                <select asp-for="ProducerNumber" class="form-control" asp-items="ViewBag.ProducerNumber"></select>
+                <span asp-validation-for="ProducerNumber" class="text-danger"></span>
+            </div>
+              <div class="form-group" style="margin-top: 5%">
+                <label asp-for="CategoryNumber" class="control-label"></label>
+                <select asp-for="CategoryNumber" class="form-control" asp-items="ViewBag.CategoryNumber"></select>
+                <span asp-validation-for="CategoryNumber" class="text-danger"></span>
+            </div>
+              <div class="form-group" style="margin-top: 5%">
+                <label asp-for="StudioNumber" class="control-label"></label>
+                <select asp-for="StudioNumber" class="form-control" asp-items="ViewBag.StudioNumber"></select>
+                <span asp-validation-for="StudioNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 5%">
+                <label asp-for="DateReleased" class="control-label"></label>
+                <input asp-for="DateReleased" class="form-control" />
+                <span asp-validation-for="DateReleased" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 5%">
+                <label asp-for="StandardCharge" class="control-label"></label>
+                <input asp-for="StandardCharge" class="form-control" />
+                <span asp-validation-for="StandardCharge" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 5%">
+                <label asp-for="PenaltyCharge" class="control-label"></label>
+                <input asp-for="PenaltyCharge" class="form-control" />
+                <span asp-validation-for="PenaltyCharge" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 5%">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

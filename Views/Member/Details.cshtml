@@ -1,0 +1,60 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<dvd_store_adcw2g1.Models.Loan>
+
+<div class="d-flex flex-wrap" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%; margin-top: 5%">
+    <a asp-action="Index" style="margin-right: 5%"><i class="fas fa-chevron-left" style="font-size:36px"></i></a>
+    <h2>DVD Loaned By Member (31 Days)</h2>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+<table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipCategory)*@ DVD Title
+            </th>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MembershipLastName)*@ Copy Number
+            </th>
+            <th scope="col">
+                Loaned Date
+            </th>
+            <th scope="">
+                Due Date
+            </th>
+            <th scope="col">
+                Returned Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DVDCopy.DVDTitle.DVDTitleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DVDCopy.CopyNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDue)
+            </td>
+            <td>
+                        @if (item.DateReturned != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.DateReturned)
+                        }else{
+                            @("Not Returned Yet")
+                        }
+                        
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

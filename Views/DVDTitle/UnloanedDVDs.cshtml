@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<dvd_store_adcw2g1.Models.DVDTitle>
+@{
+}
+
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+
+    <h1>Unloaned DVDs for more than 31 Days</h1>
+    
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+<table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                DVD Number
+            </th>
+            <th scope="col">
+                DVD Title Name
+            </th>
+            <th scope="col">
+               Date Released
+            </th>                       
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DVDNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DVDTitleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateReleased)
+            </td>
+        </tr>}
+    </tbody>
+</table>
+</div>

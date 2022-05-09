@@ -1,0 +1,26 @@
+﻿
+
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http.Extensions; 
+
+@{
+    Console.WriteLine(@Context.Request.Path);
+    @if (@Context.Session.GetString("role") == "Admin")
+    {
+        Layout = "_Layout";
+    }
+    else if (@Context.Session.GetString("role") == "User")
+    {
+        Layout = "_Layout_user";
+    }
+    else if (@Context.Request.Path == "/" || @Context.Request.Path == "/Home/login")
+    {
+        //Layout = "_Layout_Auth";
+        Console.WriteLine(@Context.Request.Path);
+    }
+    else
+    {
+        Layout = "_Layout_Auth";
+    }
+
+}
