@@ -29,7 +29,12 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await members.ToListAsync());
         }
 
-        // GET detail of a member by a ID
+
+        /// <summary>
+        /// [FUNCTION 3] Allow the user to enter or select a member by MemberNumber or MemberLastName and view a list of all the DVDs(by title and copynumber) that they have been loaned in the last 31 days
+        /// </summary>
+        /// <param name="id">Member ID</param>
+        /// <returns>Renders relevant Page</returns>
         public async Task<IActionResult> Details(int? id)
         {
             var databasecontext = from s in _databasecontext.Loans.Include(p => p.DVDCopy).Include(p => p.Member).Include(p => p.DVDCopy.DVDTitle) select s;
@@ -41,7 +46,6 @@ namespace dvd_store_adcw2g1.Controllers
             if (!id.Equals(null))
             {
                 databasecontext = databasecontext.Where(s => s.Member.MemberNumber.Equals(id));
-
             }
 
             return View(await databasecontext.ToListAsync());
