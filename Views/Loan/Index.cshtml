@@ -64,8 +64,8 @@
                     @Html.DisplayFor(modelItem => item.DateReturned)
                 </td>
                 <td>
-                   <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber">Delete</a> | 
-                    <a asp-action="ConfirmReturn" asp-route-dvdCopyID="@item.DVDCopy.CopyNumber">Returned</a>
+                   <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber"><i class="fas fa-trash"></i></a> | 
+                   <a asp-action="ConfirmReturn" asp-route-dvdCopyID="@item.DVDCopy.CopyNumber"><i class="fas fa-undo"></i></a>
                 </td>
             </tr>
     }
@@ -99,21 +99,6 @@
                 <label for="memberID" class="control-label">Member</label>
                 <select name="memberID" class ="form-control" asp-items="ViewBag.Members"></select>
             </div>
-@*            <div class="form-group">
-                <label for="DateOut" class="control-label"></label>
-                <input name="DateOut" class="form-control" />
-                <span for="DateOut" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="DateDue" class="control-label"></label>
-                <input name="DateDue" class="form-control" />
-                <span for="DateDue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="DateReturned" class="control-label"></label>
-                <input name="DateReturned" class="form-control" />
-                <span for="DateReturned" class="text-danger"></span>
-            </div>*@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -1,0 +1,62 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<dvd_store_adcw2g1.Models.ViewModels.DVDActors>
+
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+
+    <h1>DVD</h1>
+    
+</div>
+
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDTitleName)*@ Title
+            </th>
+              <th scope="col">
+                @*@Html.DisplayNameFor(model => model.Producer.ProducerName)*@ Producer
+            </th >
+             <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DVDCategory.CategoryDescription)*@ Studio
+            </th>
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.Studio.StudioName)*@ Actors
+            </th>
+              <th scope="col">
+                @*@Html.DisplayNameFor(model => model.DateReleased)*@ Release Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDTitle.DVDTitleName)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Producer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Studio)
+                </td>
+                 <td>
+                     <ul>
+                         @foreach (var actor in item.Actors)
+                        {
+                            <li>@(actor.ActorFirstName) @(actor.ActorSurname)</li>
+                        }
+                     </ul>
+                        
+                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDTitle.DateReleased)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>

@@ -1,5 +1,6 @@
 ﻿using dvd_store_adcw2g1.Models;
 using dvd_store_adcw2g1.Models.Others;
+using dvd_store_adcw2g1.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,41 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await databasecontext.ToListAsync());
         }
 
+        public async Task<IActionResult> DVDDetails()
+        {
+            var query = from s in _databasecontext.CastMembers
+                        join d in _databasecontext.DVDTitles
+                        on s.DVDNumber equals d.DVDNumber
+                        join a in _databasecontext.Actors
+                        on s.ActorNumber equals a.ActorNumber
+                        join p in _databasecontext.Producers
+                        on d.ProducerNumber equals p.ProducerNumber
+                        join st in _databasecontext.Studios
+                        on d.StudioNumber equals st.StudioNumber
+                        group a by d.DVDNumber into dg  
+                        orderby (from dt in _databasecontext.DVDTitles
+                                 where dt.DVDNumber == dg.Key
+                                 select dt).FirstOrDefault()!.DateReleased
+                        select new DVDActors()
+                        {
+                            DVDTitle = (from dt in _databasecontext.DVDTitles
+                                        where dt.DVDNumber == dg.Key
+                                        select dt).FirstOrDefault()!,
+                            Producer = (from dt in _databasecontext.DVDTitles
+                                        join p in _databasecontext.Producers
+                                        on dt.ProducerNumber equals p.ProducerNumber
+                                        where dt.DVDNumber == dg.Key
+                                        select p.ProducerName).FirstOrDefault()!,
+                            Studio = (from dt in _databasecontext.DVDTitles
+                                      join s in _databasecontext.Studios
+                                      on dt.StudioNumber equals s.StudioNumber
+                                      where dt.DVDNumber == dg.Key
+                                      select s.StudioName).FirstOrDefault()!,
+                            Actors = dg.OrderBy(a => a.ActorSurname).ToList(),
+                        }                        ;
+
+            return View(await query.ToListAsync());
+        }
         private String ToTitleCase(String @string) => _textInfo.ToTitleCase(@string.Trim());
 
         /// <summary>

@@ -16,3 +16,6 @@ html {
 body {
   margin-bottom: 60px;
 }
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: dimgray!important;
+}

@@ -1,21 +1,31 @@
 ﻿@model IEnumerable<dvd_store_adcw2g1.Models.Producer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Producer";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <h1>Producer</h1>
+    
+</div>
+<div class="d-flex justify-content-between" style="margin-left: 7%; margin-bottom: 2%; margin-right: 6%">
+    <form asp-controller="MembershipCategory" asp-action="Index" class="d-flex flex-row-reverse">
+        <input type="search" name="SearchString" placeholder="Enter Surname" id="search-focus" id="form1" class="form-control"/>
+        <button type="submit" value="Search" class="btn btn-dark">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addmodel"><i class="fas fa-add"></i></button>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProducerName)
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.ProducerName)*@ Name
             </th>
-            <th></th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,11 +35,40 @@
                 @Html.DisplayFor(modelItem => item.ProducerName)
             </td>
             <td>
-                <a asp-action="EditPost" asp-route-id="@item.ProducerNumber">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProducerNumber">Details</a> |
-                <a asp-action="DeleteConfirmed" asp-route-id="@item.ProducerNumber">Delete</a>
+                <a asp-action="EditPost" asp-route-id="@item.ProducerNumber"><i class="fas fa-pen-to-square"></i></a> |
+                <a asp-action="DeleteConfirmed" asp-route-id="@item.ProducerNumber"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+
+<!-- Modal -->
+<!--Add-->
+<div class="modal fade" id="addmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <form asp-action="Create">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add DVD Category</h5>
+@*        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>*@
+      </div>
+      <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           <div class="form-group">
+                <label for="ProducerName" class="control-label">Name</label>
+                <input name="ProducerName" class="form-control" />
+                <span for="ProducerName" class="text-danger"></span>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" value="Create" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

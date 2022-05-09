@@ -14,10 +14,32 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchString)
         {
             ViewData["MembershipCategoryNumber"] = new SelectList(_databasecontext.MembershipCategories, "MembershipCategoryNumber", "MembershipCategoryDescription");
-            var databasecontext = _databasecontext.Members.Include(p => p.MembershipCategory);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var filtered = _databasecontext.Members.Include(p => p.MembershipCategory).Where(m => m.MembershipLastName.Contains(searchString));
+                return View(await filtered.ToListAsync());
+            }
+            var members = _databasecontext.Members.Include(p => p.MembershipCategory);
+            return View(await members.ToListAsync());
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            var databasecontext = from s in _databasecontext.Loans.Include(p => p.DVDCopy).Include(p => p.Member).Include(p => p.DVDCopy.DVDTitle) select s;
+
+            var today = DateTime.Today.AddDays(-31);
+
+            databasecontext = databasecontext.Where(s => s.DateOut >= today);
+
+            if (!id.Equals(null))
+            {
+                databasecontext = databasecontext.Where(s => s.Member.MemberNumber.Equals(id));
+
+            }
+
             return View(await databasecontext.ToListAsync());
         }
 

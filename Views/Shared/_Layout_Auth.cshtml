@@ -33,12 +33,11 @@
                   <a class="nav-link active" asp-controller="Home" asp-action="Dashboard">Home
                     <span class="visually-hidden">(current)</span>
                   </a>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">DVD</a>
-                  <div class="dropdown-menu bg-dark" style="text-align: center">
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-light" asp-controller="Actor" asp-action="index">Actor</a>
-                  </div>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Actor" asp-action="index">Actor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Actor" asp-action="DVDOnShelves">DVD On Shelves</a>
                 </li>
               </ul>
               <a class="btn btn-dark" style="margin-right:5%" asp-controller="Home" asp-action="Index">Log In</a>
