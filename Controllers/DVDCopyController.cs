@@ -74,9 +74,38 @@ namespace dvd_store_adcw2g1.Controllers
             return View(dvdcopy);
         }
 
+        /// <summary>
+        /// [FUNCTION 10] Displays a list of all DVD Copies which are more than a year old and which are not currently on loan b.
+        /// </summary>
+        /// <returns>Renders Relevant View-Page</returns>
+        public async Task<IActionResult> YearOldDVDCopies()
+        {
+            var dvdCopies = _databasecontext.DVDCopies;
+            var loans = _databasecontext.Loans;
+            var query = from l in loans
+                        join d in dvdCopies
+                        on l.CopyNumber equals d.CopyNumber
+                        where d.DatePurchased.AddDays(365) < DateTime.Now
+                        group l by l.CopyNumber into lg
+                        select new OldDVDCopy {
+                            DVDCopy = (from d in _databasecontext.DVDCopies
+                                       where d.CopyNumber == lg.Key
+                                  select d).First(),
+                            DVDTitle = (from dt in _databasecontext.DVDTitles
+                                        join d in dvdCopies
+                                        on dt.DVDNumber equals d.DVDNumber                                        
+                                       where d.CopyNumber == lg.Key
+                                       select dt).First(),
+                            IsLoaned = lg.Any(l => l.DateReturned == null),                        
+                        };            
+
+            return View(await query.Where(o => !o.IsLoaned).ToListAsync());
+        }
+
         public async Task<IActionResult> EditPost(int id)
         {
             var dvdcopy = await _databasecontext.DVDCopies.SingleOrDefaultAsync(s => s.CopyNumber == id);
+            ViewData["DVDNumber"] = new SelectList(_databasecontext.DVDTitles, "DVDNumber", "DVDTitleName", dvdcopy!.DVDNumber);
             return View(dvdcopy);
         }
 

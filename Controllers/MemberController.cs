@@ -71,6 +71,32 @@ namespace dvd_store_adcw2g1.Controllers
             return View(await query.ToListAsync());
         }
 
+        /// <summary>
+        /// [FUNCTION 12] Displays a list of all Members who have not borrowed any DVD in the last 31 days, ignoring any Member who has never borrowed a DVD.
+        /// </summary>
+        /// <returns>Renders Relevant View-Page</returns>
+        public async Task<IActionResult> InactiveMember()
+        {
+            var loans = _databasecontext.Loans;
+            var query = from l in loans
+                        group l by l.MemberNumber into lg                         
+                        select new InActiveLoanMember()
+                        {
+                            Member = (from m in _databasecontext.Members
+                                               where m.MemberNumber == lg.Key select m).First(),
+                            LastDateOut = lg.Max(a => a.DateOut),
+                            LastLoanedDVDTitleName = (from t in _databasecontext.DVDTitles
+                                                      join c in _databasecontext.DVDCopies                                                     
+                                                      on t.DVDNumber equals c.DVDNumber
+                                                      join l in _databasecontext.Loans
+                                                      on c.CopyNumber equals l.CopyNumber
+                                                      where l.MemberNumber == lg.Key &&  l.DateOut == lg.Max(a => a.DateOut)
+                                                      select t.DVDTitleName).First(),
+                            DaysSinceLastLoaned = Math.Round((DateTime.Now - lg.Max(l => l.DateOut)).TotalDays,2),
+                        };
+
+            return View(await query.Where(a => (DateTime.Now > a.LastDateOut.AddDays(31))).ToListAsync());
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

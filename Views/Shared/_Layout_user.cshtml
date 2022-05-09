@@ -39,7 +39,9 @@
                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Member</a>
                   <div class="dropdown-menu bg-dark" style="text-align: center">
                     <a class="dropdown-item text-light" asp-controller="Member" asp-action="index">Member</a>
+                    <a class="dropdown-item text-light" asp-controller="Member" asp-action="MemberLoanDetails">Active Loan Details</a>
                     <a class="dropdown-item text-light" asp-controller="MembershipCategory" asp-action="index">Category</a>
+                    <a class="dropdown-item text-light" asp-controller="Member" asp-action="InactiveMember">Inactive</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -49,6 +51,7 @@
                     <a class="dropdown-item text-light" asp-controller="DVDTitle" asp-action="DVDDetails">DVD Details</a>
                     <a class="dropdown-item text-light" asp-controller="DVDCategory" asp-action="index">Category</a>
                     <a class="dropdown-item text-light" asp-controller="DVDCopy" asp-action="index">Copy</a>
+                    <a class="dropdown-item text-light" asp-controller="DVDCopy" asp-action="YearOldDVDCopies">Old DVD Copies</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-light" asp-controller="Actor" asp-action="index">Actor</a>
                     <a class="dropdown-item text-light" asp-controller="Actor" asp-action="DVDOnShelves">DVD On Shelves</a>
@@ -61,10 +64,13 @@
                   <div class="dropdown-menu bg-dark" style="text-align: center">
                     <a class="dropdown-item text-light" asp-controller="Loan" asp-action="index">Loan</a>
                     <a class="dropdown-item text-light" asp-controller="LoanType" asp-action="index">Type</a>
+                    <a class="dropdown-item text-light" asp-controller="Loan" asp-action="CurrentLoan">Active Loan</a>
+                    <a class="dropdown-item text-light" asp-controller="DVDTitle" asp-action="UnloanedDVDs">Unloaned DVDs</a>
                   </div>
                   
                 </li>
               </ul>
+              <a class="btn btn-dark" style="margin-right:5%" asp-controller="User"asp-action="EditPost" asp-route-id="@Context.Session.GetString("userid")">User Details</a>
               <a class="btn btn-dark" style="margin-right:5%" asp-controller="Home" asp-action="logout">Log Out</a>
             </div>
 </nav>
@@ -123,6 +129,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+        <!--Font Awesome icon-->
+    <script src="https://kit.fontawesome.com/10d12be10d.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

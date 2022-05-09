@@ -6,6 +6,6 @@
 
         public DVDCopy DVDCopy { get; set; }
 
-        public Loan Loan { get; set; } 
+        public bool IsLoaned { get; set; } 
     }
 }

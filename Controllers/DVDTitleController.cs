@@ -135,12 +135,6 @@ namespace dvd_store_adcw2g1.Controllers
             {
                 return NotFound();
             }
-            //var dvdtitleToUpdate = await _databasecontext.DVDTitles.FirstOrDefaultAsync(s => s.DVDNumber == id);
-            //if (await TryUpdateModelAsync<DVDTitle>(
-            //    dvdtitleToUpdate,
-            //    "",
-            //    s => s.ProducerNumber, s => s.CategoryNumber, s => s.StudioNumber, s => s.DateReleased, s => s.StandardCharge, s => s.PenaltyCharge))
-            
                 try
                 {
                     _databasecontext.Update(dvdtitle);
@@ -161,6 +155,23 @@ namespace dvd_store_adcw2g1.Controllers
             
             return View(dvdtitle);
         }
+
+        /// <summary>
+        /// [FUNCTION 13] Displays a list of all DVD titles in the shop where no copy of the title has been loaned in the last 31 days.
+        /// </summary>
+        /// <returns>Renders Relevant View-Page</returns>
+        public async Task<IActionResult> UnloanedDVDs()
+        {
+            var loans = _databasecontext.Loans;
+            var dvdCopies = _databasecontext.DVDCopies;
+            var query = from c in dvdCopies
+                        join l in loans
+                        on c.CopyNumber equals l.CopyNumber
+                        group l by c.DVDNumber into lg
+                        where DateTime.Now > lg.Max(a => a.DateOut).AddDays(31)                        select lg.First().DVDCopy.DVDTitle;
+            return View(await query.ToListAsync());
+        }
+
 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

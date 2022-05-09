@@ -1,4 +1,5 @@
 ﻿using dvd_store_adcw2g1.Models;
+using dvd_store_adcw2g1.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -33,9 +34,47 @@ namespace dvd_store_adcw2g1.Controllers
            t => new
            {
                ID = t.LoanTypeNumber,
-               LoanTypeTitle = $"{t.LoanTypeNumber} - {t.LoanDuration}, {t.LoanDuration} days"
+               LoanTypeTitle = $"{t.LoanTypeNumber} - {t.LoanTypeName}, {t.LoanDuration} days"
            }), "ID", "LoanTypeTitle");
             return View(await databasecontext.ToListAsync());
+        }
+
+        /// <summary>
+        /// Displays a list of all DVD copies on loan currently, along with total loans, ordered by the date out and title.
+        /// </summary>
+        /// <returns>Renders Relevant View-Page</returns>
+        public async Task<IActionResult> CurrentLoan()
+        {
+            var dvdTitles = _databasecontext.DVDTitles;
+            var dvdCopies = _databasecontext.DVDCopies;
+            var loans = _databasecontext.Loans;
+            var loansPerCopy = from l in loans
+                               group l by l.CopyNumber into lg
+                               select new
+                               {
+                                   CopyNumber = lg.Key,
+                                   TotalLoans = lg.Count()
+                               };
+
+            var query = from t in dvdTitles
+                        join d in dvdCopies
+                        on t.DVDNumber equals d.DVDNumber
+                        join l in loans
+                        on d.CopyNumber equals l.CopyNumber
+                        join c in loansPerCopy
+                        on l.CopyNumber equals c.CopyNumber
+                        where l.DateReturned == null
+                        orderby l.DateDue, t.DVDTitleName
+                        select new DVDCopyLoan()
+                        {
+                            DVDTitleName = t.DVDTitleName,
+                            CopyNumber = d.CopyNumber,
+                            MemberName = $"{l.Member.MembershipFirstName} {l.Member.MembershipLastName}",
+                            DateOut = l.DateOut,
+                            TotalLoans = c.TotalLoans,
+                        };
+
+            return View(await query.ToListAsync());
         }
 
         /// <summary>

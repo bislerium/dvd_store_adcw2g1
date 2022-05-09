@@ -1,0 +1,53 @@
+﻿@model IEnumerable<dvd_store_adcw2g1.Models.ViewModels.InActiveLoanMember>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+
+    <h1>Inactive Member</h1>
+    
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+<table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                Member Name
+            </th>
+            <th scope="col">
+                Address
+            </th>
+            <th scope="col">
+                Last loaned DVD Title
+            </th>
+            <th scope="col">
+                Last Loaned Date
+            </th>
+            <th scope="col">
+                No of days since last loaned
+            </th>            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.MembershipFirstName) @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.MembershipAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastLoanedDVDTitleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastDateOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DaysSinceLastLoaned)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

@@ -13,7 +13,7 @@
     {
         Layout = "_Layout_user";
     }
-    else if (@Context.Request.Path == "/")
+    else if (@Context.Request.Path == "/" || @Context.Request.Path == "/Home/login")
     {
         //Layout = "_Layout_Auth";
         Console.WriteLine(@Context.Request.Path);

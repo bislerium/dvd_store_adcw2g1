@@ -1,0 +1,44 @@
+﻿@model IEnumerable<dvd_store_adcw2g1.Models.ViewModels.OldDVDCopy>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="d-flex justify-content-between mt-4 ml-5 mb-md-5" style="width: 85%; margin-left: 7%;">
+    <h1>Old DVD Copy</h1>
+</div>
+<div class="table-responsive container-fluid ml-5 mr-5" style="width: 90%;">
+    <table class="table table-hover table-responsive-md">
+    <thead>
+        <tr>
+            <th scope="col">
+                Copy Number
+            </th>
+            <th scope="col">
+                Title
+            </th>
+            <th scope="col">
+                Purchase Date
+            </th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDCopy.CopyNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDTitle.DVDTitleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DVDCopy.DatePurchased)
+                </td>
+                <td>
+                    <a asp-action="DeleteConfirmed" asp-route-id="@item.DVDCopy.CopyNumber"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
