@@ -65,6 +65,7 @@ namespace dvd_store_adcw2g1.Controllers
                     await _databasecontext.CastMembers.AddAsync(new CastMember() { DVDTitle = dvdTitleRecord, Actor = actorRecord });
                 }
                 await _databasecontext.SaveChangesAsync();
+                Console.WriteLine(_databasecontext.DVDTitles.FindAsync(dvdTitleRecord.DVDNumber));
             }
             catch (Exception ex )
             {

@@ -22,10 +22,10 @@
     <thead>
         <tr>
             <th scope="col">
-                @*@Html.DisplayNameFor(model => model.LoanType)*@ Type
+                @*@Html.DisplayNameFor(model => model.LoanType)*@ Loan Type
             </th>
             <th scope="col">
-                @*@Html.DisplayNameFor(model => model.DVDCopy)*@ DVD
+                @*@Html.DisplayNameFor(model => model.DVDCopy)*@ DVD Copy
             </th>
             <th scope="col">
                 @*@Html.DisplayNameFor(model => model.Member)*@ Member
@@ -49,10 +49,10 @@
                     @Html.DisplayFor(modelItem => item.LoanType.LoanTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DVDCopy.DatePurchased)
+                    @Html.DisplayFor(modelItem => item.DVDCopy.DVDTitle.DVDTitleName) Copy-@Html.DisplayFor(modelItem => item.DVDCopy.CopyNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
+                     @Html.DisplayFor(modelItem => item.Member.MembershipFirstName) @Html.DisplayFor(modelItem => item.Member.MembershipLastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateOut)
@@ -64,10 +64,8 @@
                     @Html.DisplayFor(modelItem => item.DateReturned)
                 </td>*@
                 <td>
-                    <a asp-action="EditPost" asp-route-id="@item.LoanNumber"><i class="fas fa-pen-to-square"></i></a> |
-@*                    <a asp-action="Details" asp-route-id="@item.LoanNumber">Details</a> |*@
-@*                    <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber">Delete</a>*@
-                    <a asp-action="return" asp-route-id="@item.LoanNumber">returned</a>
+                   <a asp-action="DeleteConfirmed" asp-route-id="@item.LoanNumber">Delete</a> | 
+                    <a asp-action="return" asp-route-id="@item.LoanNumber">Returned</a>
                 </td>
             </tr>
     }
