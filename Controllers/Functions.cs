@@ -25,7 +25,8 @@ namespace dvd_store_adcw2g1.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Function1(String lastName) {
+        public async Task<IActionResult> Function1(String lastName)
+        {
             var query = from a in _databasecontext.Actors
                         join cm in _databasecontext.CastMembers
                         on a.ActorNumber equals cm.ActorNumber
@@ -54,8 +55,7 @@ namespace dvd_store_adcw2g1.Controllers
                             DVDTitle = dtg.Key,
                             TotalDVDCopies = dtg.Count(),
                         };
-              return View(await query.ToListAsync());
-
+            return View(await query.ToListAsync());
         }
 
         public IActionResult Function6Form()
@@ -313,7 +313,7 @@ namespace dvd_store_adcw2g1.Controllers
             var query = from l in loans
                         join d in dvdCopies
                         on l.CopyNumber equals d.CopyNumber
-                        where (DateTime.Now - d.DatePurchased).TotalDays > 365 && l.DateReturned != null
+                        where l.DateReturned != null
                         select new OldDVDCopy()
                         {
                             DVDTitle = d.DVDTitle,

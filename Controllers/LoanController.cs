@@ -14,12 +14,12 @@ namespace dvd_store_adcw2g1.Controllers
         {
             _databasecontext = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var databasecontext = _databasecontext.Loans.Include(p => p.LoanType).Include(p => p.DVDCopy).Include(p => p.Member);
             return View(await databasecontext.ToListAsync());
         }
-
 
         public async Task<IActionResult> Create()
         {

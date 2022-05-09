@@ -13,6 +13,6 @@ namespace dvd_store_adcw2g1.Models
         public string CategoryDescription { get; set; }
 
         [Required]
-        public bool IsAgeRestricted { get; set; }
+        public string AgeRestricted { get; set; }
     }
 }

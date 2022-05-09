@@ -14,6 +14,6 @@ namespace dvd_store_adcw2g1.Models
 
         //Loan Duration in Days.
         [Required]
-        public int LoanDuration { get; set; }
+        public string LoanDuration { get; set; }
     }
 }
